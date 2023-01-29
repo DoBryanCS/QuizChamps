@@ -23,7 +23,7 @@ function Sidebar({ questions, selectQuestion }) {
             }}
             className="text-sm"
             key={index}
-            onClick={() => selectQuestion(question, index)}
+            onClick={() => selectQuestion(question.question, index)}
           >
             Question {index + 1}
           </li>

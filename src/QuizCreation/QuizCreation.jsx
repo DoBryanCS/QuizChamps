@@ -1,60 +1,77 @@
 import { useState } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
+import "./QuizCreation.css";
 
 function QuizCreation() {
-  const [questions, setQuestions] = useState(["Question 1"]);
-  const [question, setQuestion] = useState("Question 1");
+  const [questions, setQuestions] = useState([
+    {
+      question: "",
+      answers: [
+        { text: "", isCorrect: false, disabled: false },
+        { text: "", isCorrect: false, disabled: false },
+        { text: "", isCorrect: false, disabled: false },
+        { text: "", isCorrect: false, disabled: false },
+      ],
+    },
+  ]);
   const [selectedQuestion, setSelectedQuestion] = useState({
-    question: "Question 1",
+    question: "",
     index: 0,
   });
-  const [answers, setAnswers] = useState([
-    { text: "", isCorrect: false, disabled: false },
-    { text: "", isCorrect: false, disabled: false },
-    { text: "", isCorrect: false, disabled: false },
-    { text: "", isCorrect: false, disabled: false },
-  ]);
 
   const addQuestion = (event) => {
     event.preventDefault();
-    setQuestions(questions.concat(""));
-    setQuestion("");
+    setQuestions(
+      questions.concat({
+        question: "",
+        answers: [
+          { text: "", isCorrect: false, disabled: false },
+          { text: "", isCorrect: false, disabled: false },
+          { text: "", isCorrect: false, disabled: false },
+          { text: "", isCorrect: false, disabled: false },
+        ],
+      })
+    );
+    setSelectedQuestion.question = "";
     setSelectedQuestion({ question: "", index: questions.length });
   };
 
-  const handleChange = (e, index) => {
+  const handleQuestionChange = (e, index) => {
     const updatedQuestions = [...questions];
-    updatedQuestions[index] = e.target.value;
+    updatedQuestions[index].question = e.target.value;
     setQuestions(updatedQuestions);
-    setQuestion(e.target.value);
+    setSelectedQuestion({ question: e.target.value, index });
   };
+
   const selectQuestion = (question, index) => {
     setSelectedQuestion({ question, index });
-    setQuestion(question);
   };
 
-  const handleAnswerChange = (e, index) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index].text = e.target.value;
-    setAnswers(updatedAnswers);
+  const handleAnswerChange = (e, questionIndex, answerIndex) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].answers[answerIndex].text = e.target.value;
+    setQuestions(updatedQuestions);
   };
 
-  const handleCheckboxChange = (index) => {
-    const updatedAnswers = [...answers];
-    updatedAnswers[index].isCorrect = !updatedAnswers[index].isCorrect;
-    if (updatedAnswers[index].isCorrect === true) {
-      for (let i = 0; i < updatedAnswers.length; i++) {
-        if (i !== index) {
-          updatedAnswers[i].disabled = true;
+  const handleCheckboxChange = (questionIndex, answerIndex) => {
+    const updatedQuestions = [...questions];
+    updatedQuestions[questionIndex].answers[answerIndex].isCorrect =
+      !updatedQuestions[questionIndex].answers[answerIndex].isCorrect;
+    if (
+      updatedQuestions[questionIndex].answers[answerIndex].isCorrect === true
+    ) {
+      for (let i = 0; i < updatedQuestions[questionIndex].answers.length; i++) {
+        if (i !== answerIndex) {
+          updatedQuestions[questionIndex].answers[i].disabled = true;
         }
       }
     } else {
-      for (let i = 0; i < updatedAnswers.length; i++) {
-        updatedAnswers[i].disabled = false;
+      for (let i = 0; i < updatedQuestions[questionIndex].answers.length; i++) {
+        updatedQuestions[questionIndex].answers[i].disabled = false;
       }
     }
-    setAnswers(updatedAnswers);
+    setQuestions(updatedQuestions);
   };
 
   const saveQuestions = () => {
@@ -108,107 +125,65 @@ function QuizCreation() {
           <input
             type="text"
             style={{ width: "80%" }}
-            value={question}
-            onChange={(e) => handleChange(e, selectedQuestion.index)}
+            value={selectedQuestion.question}
+            onChange={(e) => handleQuestionChange(e, selectedQuestion.index)}
             placeholder="Add your question here"
             className="my-4 p-2 border rounded text-center"
           />
-          <div
-            style={{
-              width: "100%",
-              height: "30%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="answers">
             <textarea
-              maxlength="200"
+              maxLength="200"
               type="text"
-              style={{
-                width: "40%",
-                height: "60%",
-                overflow: "hidden",
-                resize: "none",
-              }}
               placeholder="Add answer 1"
-              className="my-4 p-2 border rounded m-2 text-center"
-              onChange={(e) => handleAnswerChange(e, 0)}
-              value={answers[0].text}
+              className="textarea my-4 p-2 border rounded m-2 text-center"
+              onChange={(e) => handleAnswerChange(e, selectedQuestion.index, 0)}
+              value={questions[selectedQuestion.index].answers[0].text}
             />
             <Checkbox
-              disabled={answers[0].disabled}
-              onChange={() => handleCheckboxChange(0)}
-              checked={answers[0].isCorrect}
+              disabled={questions[selectedQuestion.index].answers[0].disabled}
+              onChange={() => handleCheckboxChange(selectedQuestion.index, 0)}
+              checked={questions[selectedQuestion.index].answers[0].isCorrect}
             />
             <textarea
-              maxlength="200"
+              maxLength="200"
               type="text"
-              style={{
-                width: "40%",
-                height: "60%",
-                overflow: "hidden",
-                resize: "none",
-              }}
               placeholder="Add answer 2"
-              className="my-4 p-2 border rounded m-2 text-center"
-              onChange={(e) => handleAnswerChange(e, 1)}
-              value={answers[1].text}
+              className="textarea my-4 p-2 border rounded m-2 text-center"
+              onChange={(e) => handleAnswerChange(e, selectedQuestion.index, 1)}
+              value={questions[selectedQuestion.index].answers[1].text}
             />
             <Checkbox
-              disabled={answers[1].disabled}
-              onChange={() => handleCheckboxChange(1)}
-              checked={answers[1].isCorrect}
+              disabled={questions[selectedQuestion.index].answers[1].disabled}
+              onChange={() => handleCheckboxChange(selectedQuestion.index, 1)}
+              checked={questions[selectedQuestion.index].answers[1].isCorrect}
             />
           </div>
-          <div
-            style={{
-              width: "100%",
-              height: "30%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="answers">
             <textarea
-              maxlength="200"
+              maxLength="200"
               type="text"
-              style={{
-                width: "40%",
-                height: "60%",
-                overflow: "hidden",
-                resize: "none",
-              }}
               placeholder="Add answer 3"
-              className="my-4 p-2 border rounded m-2 text-center"
-              onChange={(e) => handleAnswerChange(e, 2)}
-              value={answers[2].text}
+              className="textarea my-4 p-2 border rounded m-2 text-center"
+              onChange={(e) => handleAnswerChange(e, selectedQuestion.index, 2)}
+              value={questions[selectedQuestion.index].answers[2].text}
             />
             <Checkbox
-              disabled={answers[2].disabled}
-              onChange={() => handleCheckboxChange(2)}
-              checked={answers[2].isCorrect}
+              disabled={questions[selectedQuestion.index].answers[2].disabled}
+              onChange={() => handleCheckboxChange(selectedQuestion.index, 2)}
+              checked={questions[selectedQuestion.index].answers[2].isCorrect}
             />
             <textarea
-              maxlength="200"
+              maxLength="200"
               type="text"
-              style={{
-                width: "40%",
-                height: "60%",
-                overflow: "hidden",
-                resize: "none",
-              }}
               placeholder="Add answer 4"
-              className="my-4 p-2 border rounded m-2 text-center"
-              onChange={(e) => handleAnswerChange(e, 3)}
-              value={answers[3].text}
+              className="textarea my-4 p-2 border rounded m-2 text-center"
+              onChange={(e) => handleAnswerChange(e, selectedQuestion.index, 3)}
+              value={questions[selectedQuestion.index].answers[3].text}
             />
             <Checkbox
-              disabled={answers[3].disabled}
-              onChange={() => handleCheckboxChange(3)}
-              checked={answers[3].isCorrect}
+              disabled={questions[selectedQuestion.index].answers[3].disabled}
+              onChange={() => handleCheckboxChange(selectedQuestion.index, 3)}
+              checked={questions[selectedQuestion.index].answers[3].isCorrect}
             />
           </div>
         </form>
