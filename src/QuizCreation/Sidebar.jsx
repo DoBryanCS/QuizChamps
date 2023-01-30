@@ -16,16 +16,27 @@ function Sidebar({ questions, selectQuestion }) {
           <li
             ref={index === questions.length - 1 ? lastQuestionRef : null}
             style={{
-              padding: "20px",
+              border: "2px solid #1A237E",
+              borderRadius: "10px",
+              margin: "20px",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              height: "20vh",
             }}
             className="text-sm"
             key={index}
             onClick={() => selectQuestion(question.question, index)}
           >
-            Question {index + 1}
+            <img
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+                objectFit: "contain",
+              }}
+              src={questions[index].imageSrc}
+              alt="Selected Image"
+            />
           </li>
         ))}
       </ul>
