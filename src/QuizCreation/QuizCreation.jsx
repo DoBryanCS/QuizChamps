@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import "./QuizCreation.css";
 
 function QuizCreation() {
@@ -128,22 +129,13 @@ function QuizCreation() {
   };
 
   return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "20% 80%",
-        height: "100vh",
-      }}
-    >
-      <div
-        style={{
-          display: "grid",
-          gridTemplateRows: "80% 20%",
-          height: "100vh",
-        }}
-      >
+    <div className="grid-container">
+      <div className="grid-container2">
         <Sidebar questions={questions} selectQuestion={selectQuestion} />
-        <div style={{ display: "grid", placeContent: "center" }}>
+        <div
+          className="addquestion"
+          style={{ display: "grid", placeContent: "center" }}
+        >
           <div
             style={{
               display: "flex",
@@ -153,13 +145,13 @@ function QuizCreation() {
           >
             <button
               style={{
-                backgroundColor: "#1A237E",
-                border: "2px solid #1A237E",
+                backgroundColor: "#6949FF",
+                border: "2px solid #6949FF",
                 borderRadius: "15px",
                 boxShadow: "10px 10px 10px #888888",
               }}
               onClick={addQuestion}
-              className=" text-white p-4 rounded"
+              className="text-white p-4 rounded"
             >
               +
             </button>
@@ -181,7 +173,11 @@ function QuizCreation() {
         >
           <input
             type="text"
-            style={{ width: "90%", backgroundColor: "#f0eded", boxShadow: "2px 2px 2px #888888", }}
+            style={{
+              width: "90%",
+              backgroundColor: "#f0eded",
+              boxShadow: "2px 2px 2px #888888",
+            }}
             value={selectedQuestion.question}
             onChange={(e) => handleQuestionChange(e, selectedQuestion.index)}
             placeholder="Add your question here"
@@ -189,21 +185,18 @@ function QuizCreation() {
           />
           <div
             style={{
-              border: "2px solid #1A237E",
-              borderRadius: "10px",
-              width: "20%",
-              height: "20%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              cursor: "pointer",
-              boxShadow: "2px 2px 2px #888888",
+              backgroundColor: questions[selectedQuestion.index].imageSrc
+                ? "transparent"
+                : "#f0eded",
             }}
-            className="border rounded m-2 text-center"
+            className="insertImage border rounded m-2 text-center"
             onClick={() => fileInputRef.current.click()}
           >
             {questions[selectedQuestion.index].showText && (
-              <div style={{ color: "#1A237E" }}>Add Cover Image</div>
+              <div style={{ color: "#6949FF" }}>
+                <InsertPhotoIcon />
+                <div>Add Cover Image</div>
+              </div>
             )}
             {questions[selectedQuestion.index].imageSrc && (
               <img
@@ -239,6 +232,7 @@ function QuizCreation() {
               value={questions[selectedQuestion.index].answers[0].text}
             />
             <Checkbox
+              style={{ color: "#6949FF" }}
               disabled={questions[selectedQuestion.index].answers[0].disabled}
               onChange={() => handleCheckboxChange(selectedQuestion.index, 0)}
               checked={questions[selectedQuestion.index].answers[0].isCorrect}
@@ -256,6 +250,7 @@ function QuizCreation() {
               value={questions[selectedQuestion.index].answers[1].text}
             />
             <Checkbox
+              style={{ color: "#6949FF" }}
               disabled={questions[selectedQuestion.index].answers[1].disabled}
               onChange={() => handleCheckboxChange(selectedQuestion.index, 1)}
               checked={questions[selectedQuestion.index].answers[1].isCorrect}
@@ -278,6 +273,7 @@ function QuizCreation() {
                 value={questions[selectedQuestion.index].answers[2].text}
               />
               <Checkbox
+                style={{ color: "#6949FF" }}
                 disabled={questions[selectedQuestion.index].answers[2].disabled}
                 onChange={() => handleCheckboxChange(selectedQuestion.index, 2)}
                 checked={questions[selectedQuestion.index].answers[2].isCorrect}
@@ -297,6 +293,7 @@ function QuizCreation() {
                 value={questions[selectedQuestion.index].answers[3].text}
               />
               <Checkbox
+                style={{ color: "#6949FF" }}
                 disabled={questions[selectedQuestion.index].answers[3].disabled}
                 onChange={() => handleCheckboxChange(selectedQuestion.index, 3)}
                 checked={questions[selectedQuestion.index].answers[3].isCorrect}

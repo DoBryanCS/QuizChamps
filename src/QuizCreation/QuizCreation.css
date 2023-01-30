@@ -27,8 +27,85 @@
 }
 
 .add-remove-answers {
-  background-color: #1a237e;
-  border: 2px solid #1a237e;
+  background-color: #6949ff;
+  border: 2px solid #6949ff;
   border-radius: 30px;
   box-shadow: 10px 10px 10px #888888;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 20% 80%;
+  height: 100vh;
+}
+
+.grid-container2 {
+  display: grid;
+  grid-template-rows: 80% 20%;
+  height: 100vh;
+}
+
+.text-sm {
+  border: 2px solid #6949ff;
+  border-radius: 10px;
+  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20vh;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.scrollbar {
+  overflow-y: scroll;
+}
+
+.insertImage {
+  border: 2px solid #6949ff;
+  border-radius: 10px;
+  width: 20%;
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+@media screen and (max-width: 920px) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 15% 85%;
+    height: 100vh;
+  }
+  .scrollbar {
+    height: 15%;
+  }
+  .addquestion {
+    height: 15%;
+  }
+  .grid-container2 {
+    grid-template-rows: none;
+    grid-template-columns: 80% 20%;
+  }
+  .list {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    align-items: center;
+  }
+  .scrollbar {
+    overflow-x: scroll;
+    overflow-y: hidden;
+  }
+  .text-sm {
+    height: 100%;
+    width: 20vh;
+    flex-shrink: 0;
+  }
+  .insertImage {
+    width: 40%;
+  }
 }

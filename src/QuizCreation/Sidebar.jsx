@@ -1,4 +1,6 @@
 import { useRef, useEffect } from "react";
+import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import "./QuizCreation.css";
 
 function Sidebar({ questions, selectQuestion }) {
   const lastQuestionRef = useRef();
@@ -10,33 +12,33 @@ function Sidebar({ questions, selectQuestion }) {
   }, [questions]);
 
   return (
-    <div style={{ overflowY: "scroll" }}>
-      <ul>
+    <div className="scrollbar">
+      <ul className="list">
         {questions.map((question, index) => (
           <li
             ref={index === questions.length - 1 ? lastQuestionRef : null}
             style={{
-              border: "2px solid #1A237E",
-              borderRadius: "10px",
-              margin: "20px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "20vh",
+              backgroundColor: !questions[index].imageSrc ? "#f0eded" : "",
             }}
             className="text-sm"
             key={index}
             onClick={() => selectQuestion(question.question, index)}
           >
-            <img
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-                objectFit: "contain",
-              }}
-              src={questions[index].imageSrc}
-              alt="Selected Image"
-            />
+            {questions[index].imageSrc ? (
+              <img
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "100%",
+                  objectFit: "contain",
+                }}
+                src={questions[index].imageSrc}
+                alt="Selected Image"
+              />
+            ) : (
+              <div style={{ color: "#6949FF" }}>
+                <InsertPhotoIcon />
+              </div>
+            )}
           </li>
         ))}
       </ul>
