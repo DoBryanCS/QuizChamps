@@ -14,7 +14,7 @@
 }
 
 .question-input::placeholder {
-  color: #666666;
+  color: #888888;
 }
 
 .answers {
@@ -46,8 +46,6 @@
 }
 
 .text-sm {
-  border: 2px solid #6949ff;
-  border-radius: 10px;
   margin: 20px;
   display: flex;
   align-items: center;
@@ -71,6 +69,40 @@
   justify-content: center;
   cursor: pointer;
   box-shadow: 2px 2px 2px #888888;
+}
+
+.square {
+  width: 15px;
+  height: 15px;
+  background-color: #6949ff;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  border: #6949ff 2px solid;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.text-sm .deleteIcon {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #888888;
+  visibility: hidden;
+}
+
+.text-sm:hover .deleteIcon {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #888888;
+  visibility: visible;
 }
 
 @media screen and (max-width: 920px) {
@@ -107,5 +139,14 @@
   }
   .insertImage {
     width: 40%;
+  }
+  .text-sm .deleteIcon {
+    width: 25px;
+    height: 25px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #888888;
+    visibility: visible;
   }
 }
