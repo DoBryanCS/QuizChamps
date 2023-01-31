@@ -1,9 +1,57 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import "./QuizCreationModal.css";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 
-function QuizCreationModal({ show, setShow }) {
+function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
   const fileInputRef = useRef(null);
+  const [quizInfoTemp, setQuizInfoTemp] = useState({
+    title: "",
+    topic: "",
+    image: "",
+    imageSrc: null,
+    showText: true,
+  });
+
+  const handleTitleChange = (e) => {
+    const newQuizInfoTemp = { ...quizInfoTemp };
+    newQuizInfoTemp.title = e.target.value;
+    setQuizInfoTemp(newQuizInfoTemp);
+  };
+
+  const handleTopicChange = (e) => {
+    const newQuizInfoTemp = { ...quizInfoTemp };
+    newQuizInfoTemp.topic = e.target.value;
+    setQuizInfoTemp(newQuizInfoTemp);
+  };
+
+  const handleImageChange = (e) => {
+    if (e.target.files.length > 0) {
+      const newQuizInfoTemp = {...quizInfoTemp};
+      const imageFile = e.target.files[0];
+      const objectUrl = URL.createObjectURL(imageFile);
+      newQuizInfoTemp.imageSrc = objectUrl;
+      newQuizInfoTemp.showText = false;
+      newQuizInfoTemp.image = imageFile;
+      setQuizInfoTemp(newQuizInfoTemp);
+    } else {
+      const newQuizInfoTemp = {...quizInfoTemp};
+      newQuizInfoTemp.image = "";
+      newQuizInfoTemp.imageSrc = null;
+      newQuizInfoTemp.showText = true;
+      setQuizInfoTemp(newQuizInfoTemp);
+    }
+  };
+
+  const saveSummary = () => {
+    setQuizInfo(quizInfoTemp);
+    setShow(false);
+  };
+
+  const cancelSummary = () => {
+    setQuizInfoTemp(quizInfo);
+    setShow(false);
+  };
+
   return (
     show && (
       <>
@@ -24,10 +72,10 @@ function QuizCreationModal({ show, setShow }) {
           style={{
             borderRadius: "10px",
             position: "fixed",
-            top: "10%",
+            top: "8%",
             left: "20%",
             right: "20%",
-            bottom: "10%",
+            bottom: "8%",
             background: "white",
             boxShadow: "10px 10px 50px #888888",
             zIndex: "1",
@@ -63,6 +111,8 @@ function QuizCreationModal({ show, setShow }) {
                 }}
                 placeholder="Quiz Title"
                 className="question-input my-4 p-2 border rounded text-center"
+                onChange={(e) => handleTitleChange(e)}
+                value={quizInfoTemp.title}
               />
             </div>
             <div
@@ -83,6 +133,8 @@ function QuizCreationModal({ show, setShow }) {
                 }}
                 placeholder="Quiz Topic"
                 className="question-input my-4 p-2 border rounded text-center"
+                onChange={(e) => handleTopicChange(e)}
+                value={quizInfoTemp.topic}
               />
             </div>
             <div
@@ -94,18 +146,40 @@ function QuizCreationModal({ show, setShow }) {
                 height: "40%",
               }}
             >
-              <label className="font-bold">Cover Image:</label>
+              <label style={{paddingTop: "20px"}} className="font-bold">Cover Image:</label>
               <div
+                style={{
+                  backgroundColor: quizInfoTemp.imageSrc
+                    ? "transparent"
+                    : "#f0eded",
+                }}
                 className="insertImage2 border rounded m-2 text-center"
                 onClick={() => fileInputRef.current.click()}
               >
-                <div>Add Cover Image</div>
+                {quizInfoTemp.showText && (
+                  <div style={{ color: "#6949FF" }}>
+                    <InsertPhotoIcon />
+                    <div>Add Cover Image</div>
+                  </div>
+                )}
+                {quizInfoTemp.imageSrc && (
+                  <img
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "cover",
+                    }}
+                    src={quizInfoTemp.imageSrc}
+                    alt="Selected Image"
+                  />
+                )}
               </div>
               <input
                 type="file"
                 accept="image/*"
                 multiple={false}
                 ref={fileInputRef}
+                onChange={(e) => handleImageChange(e)}
                 style={{ display: "none" }}
               />
             </div>
@@ -119,14 +193,14 @@ function QuizCreationModal({ show, setShow }) {
           >
             <button
               className="modalButton1 text-black p-3"
-              onClick={() => setShow(false)}
+              onClick={cancelSummary}
               style={{ marginRight: "10px" }}
             >
               Cancel
             </button>
             <button
               className="modalButton2 text-white p-3"
-              onClick={() => setShow(false)}
+              onClick={saveSummary}
             >
               Save
             </button>

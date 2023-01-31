@@ -158,4 +158,8 @@
   .addSettings {
     flex-direction: column;
   }
+
+  .addQuestion {
+    margin-bottom: 20px;
+  }
 }

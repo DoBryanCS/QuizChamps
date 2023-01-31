@@ -10,6 +10,7 @@ function QuizCreation() {
   const [showPopup, setShowPopup] = useState(true);
 
   const fileInputRef = useRef(null);
+  const [quizInfo, setQuizInfo] = useState({ title: "", topic: "", image: "", imageSrc: "", showText: "true"});
   const [questions, setQuestions] = useState([
     {
       question: "",
@@ -136,6 +137,8 @@ function QuizCreation() {
     <div>
       <div>
         <QuizCreationModal
+          quizInfo={quizInfo}
+          setQuizInfo={setQuizInfo}
           show={showPopup}
           setShow={setShowPopup}
         ></QuizCreationModal>
@@ -173,12 +176,12 @@ function QuizCreation() {
                     marginRight: "10px",
                   }}
                   onClick={addQuestion}
-                  className="text-white p-4 rounded"
+                  className="addQuestion text-white p-4 rounded"
                 >
                   +
                 </button>
                 <SettingsIcon
-                  style={{ color: "#888888", height: "50%", width: "50%" }}
+                  style={{ color: "#888888" }}
                   onClick={() => setShowPopup(true)}
                 >
                   Settings
