@@ -39,6 +39,7 @@ const handleGoogleSignIn = async () => {
   }
 };*/
 
+
 const Identification = () => {
   const [showModal, setShowModal] = useState(false);
 
@@ -47,8 +48,57 @@ const Identification = () => {
   };
 
   //const [user, setUser] = useState(null);
-  const [Email, setEmail] = useState(null);
-  const [Password, setPassword] = useState(null);
+  const [Email, setEmail] = useState("");
+  const [Password, setPassword] = useState("");
+  const [ConfirmPassword, setConformPassword] = useState("");
+
+async function Login() {
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ Email, Password })
+    });
+    const data = await response.json();
+    if (data.success) {
+      return data.key;
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+async function SignUp() {
+  try {
+    const response = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ Email, Password })
+    });
+    const data = await response.json();
+    if (data.success) {
+      return data.key;
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+const signInWithGoogle = () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  auth.signInWithPopup(provider);
+}
+
 
   return (
     <div className="py-72 px-28">
@@ -67,6 +117,7 @@ const Identification = () => {
                     type="email"
                     value={Email}
                     required
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
@@ -78,11 +129,12 @@ const Identification = () => {
                     type="password"
                     value={Password}
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <button
                   className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                  type="submit"
+                  onClick={Login}
                 >
                   Login
                 </button>
@@ -95,13 +147,13 @@ const Identification = () => {
               </form>
               <button
                 className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                /**onClick={handleGoogleSignIn}*/
+                onClick={signInWithGoogle}
               >
                 Login with Google
               </button>
             </div>
           </div>
-        )}{" "}
+        )}
       </div>
       <div>
         {!showModal && (
@@ -109,6 +161,7 @@ const Identification = () => {
             <div className="bg-white p-6 rounded-lg">
               <form className="pb-2">
                 <h2 className="text-lg font-medium mb-4">Sign Up</h2>
+                
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2">
                     Email
@@ -118,6 +171,7 @@ const Identification = () => {
                     type="email"
                     value={Email}
                     required
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="mb-4">
@@ -129,14 +183,27 @@ const Identification = () => {
                     type="password"
                     value={Password}
                     required
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Confirm Password
+                  </label>
+                  <input
+                    className="border border-gray-400 p-2 rounded-lg w-full"
+                    type="password"
+                    value={ConfirmPassword}
+                    required
+                    onChange={(e) => setConformPassword(e.target.value)}
+                  />
+                </div>
+                { Password == ConfirmPassword && (<button
                   className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                  type="submit"
+                  onClick={SignUp}
                 >
                   Sign Up
-                </button>
+                </button>)}
               <button
                 className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
                 onClick={handleToggleModal}
@@ -146,7 +213,7 @@ const Identification = () => {
               </form>
               <button
                 className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                /**onClick={handleGoogleSignIn}*/
+                onClick={signInWithGoogle}
               >
                 Sign in with Google
               </button>
