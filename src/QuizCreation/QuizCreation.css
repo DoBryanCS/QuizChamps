@@ -105,6 +105,12 @@
   visibility: visible;
 }
 
+.addSettings {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 @media screen and (max-width: 920px) {
   .grid-container {
     display: grid;
@@ -148,5 +154,8 @@
     right: 0;
     color: #888888;
     visibility: visible;
+  }
+  .addSettings {
+    flex-direction: column;
   }
 }

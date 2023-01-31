@@ -1,10 +1,14 @@
 import { useState, useRef } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
+import QuizCreationModal from "./QuizCreationModal";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import "./QuizCreation.css";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function QuizCreation() {
+  const [showPopup, setShowPopup] = useState(true);
+
   const fileInputRef = useRef(null);
   const [questions, setQuestions] = useState([
     {
@@ -129,219 +133,254 @@ function QuizCreation() {
   };
 
   return (
-    <div className="grid-container">
-      <div className="grid-container2">
-        <Sidebar
-          questions={questions}
-          selectQuestion={selectQuestion}
-          selectedQuestion={selectedQuestion.index}
-          setQuestions={setQuestions}
-        />
-        <div
-          className="addquestion"
-          style={{ display: "grid", placeContent: "center" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            <button
-              style={{
-                backgroundColor: "#6949FF",
-                border: "2px solid #6949FF",
-                borderRadius: "15px",
-                boxShadow: "10px 10px 10px #888888",
-              }}
-              onClick={addQuestion}
-              className="text-white p-4 rounded"
-            >
-              +
-            </button>
-          </div>
-        </div>
+    <div>
+      <div>
+        <QuizCreationModal
+          show={showPopup}
+          setShow={setShowPopup}
+        ></QuizCreationModal>
       </div>
-      {questions[selectedQuestion.index] !== undefined && (
-        <div>
-          <form
-            style={{
-              paddingBottom: "5%",
-              width: "100%",
-              height: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              boxSizing: "border-box",
-            }}
+
+      <div
+        className="grid-container"
+        style={{ pointerEvents: showPopup ? "none" : "" }}
+      >
+        <div className="grid-container2">
+          <Sidebar
+            questions={questions}
+            selectQuestion={selectQuestion}
+            selectedQuestion={selectedQuestion.index}
+            setQuestions={setQuestions}
+          />
+          <div
+            className="addquestion"
+            style={{ display: "grid", placeContent: "center" }}
           >
-            <input
-              type="text"
-              style={{
-                width: "90%",
-                backgroundColor: "#f0eded",
-                boxShadow: "2px 2px 2px #888888",
-              }}
-              value={selectedQuestion.question}
-              onChange={(e) => handleQuestionChange(e, selectedQuestion.index)}
-              placeholder="Add your question here"
-              className="question-input my-4 p-2 border rounded text-center"
-            />
             <div
               style={{
-                backgroundColor: questions[selectedQuestion.index].imageSrc
-                  ? "transparent"
-                  : "#f0eded",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
               }}
-              className="insertImage border rounded m-2 text-center"
-              onClick={() => fileInputRef.current.click()}
             >
-              {questions[selectedQuestion.index].showText && (
-                <div style={{ color: "#6949FF" }}>
-                  <InsertPhotoIcon />
-                  <div>Add Cover Image</div>
-                </div>
-              )}
-              {questions[selectedQuestion.index].imageSrc && (
-                <img
+              <div className="addSettings">
+                <button
                   style={{
-                    maxWidth: "100%",
-                    maxHeight: "100%",
-                    objectFit: "cover",
+                    backgroundColor: "#6949FF",
+                    border: "2px solid #6949FF",
+                    borderRadius: "15px",
+                    boxShadow: "10px 10px 10px #888888",
+                    marginRight: "10px",
                   }}
-                  src={questions[selectedQuestion.index].imageSrc}
-                  alt="Selected Image"
-                />
-              )}
+                  onClick={addQuestion}
+                  className="text-white p-4 rounded"
+                >
+                  +
+                </button>
+                <SettingsIcon
+                  style={{ color: "#888888", height: "50%", width: "50%" }}
+                  onClick={() => setShowPopup(true)}
+                >
+                  Settings
+                </SettingsIcon>
+              </div>
             </div>
-            <input
-              type="file"
-              accept="image/*"
-              multiple={false}
-              onChange={(e) => handleImageChange(e)}
-              ref={fileInputRef}
-              style={{ display: "none" }}
-            />
-            <div className="answers">
-              <textarea
-                style={{
-                  backgroundColor: "#3779FF",
-                  border: "2px solid #3779FF",
-                }}
-                maxLength="200"
+          </div>
+        </div>
+        {questions[selectedQuestion.index] !== undefined && (
+          <div>
+            <form
+              style={{
+                paddingBottom: "5%",
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                boxSizing: "border-box",
+              }}
+            >
+              <input
                 type="text"
-                placeholder="Add answer 1"
-                className="textarea my-4 p-3 m-2 text-white"
-                onChange={(e) =>
-                  handleAnswerChange(e, selectedQuestion.index, 0)
-                }
-                value={questions[selectedQuestion.index].answers[0].text}
-              />
-              <Checkbox
-                style={{ color: "#6949FF" }}
-                disabled={questions[selectedQuestion.index].answers[0].disabled}
-                onChange={() => handleCheckboxChange(selectedQuestion.index, 0)}
-                checked={questions[selectedQuestion.index].answers[0].isCorrect}
-              />
-              <textarea
                 style={{
-                  backgroundColor: "#F75555",
-                  border: "2px solid #F75555",
+                  width: "90%",
+                  backgroundColor: "#f0eded",
+                  boxShadow: "2px 2px 2px #888888",
                 }}
-                maxLength="200"
-                type="text"
-                placeholder="Add answer 2"
-                className="textarea my-4 p-3 m-2 text-center text-white"
+                value={selectedQuestion.question}
                 onChange={(e) =>
-                  handleAnswerChange(e, selectedQuestion.index, 1)
+                  handleQuestionChange(e, selectedQuestion.index)
                 }
-                value={questions[selectedQuestion.index].answers[1].text}
+                placeholder="Add your question here"
+                className="question-input my-4 p-2 border rounded text-center"
               />
-              <Checkbox
-                style={{ color: "#6949FF" }}
-                disabled={questions[selectedQuestion.index].answers[1].disabled}
-                onChange={() => handleCheckboxChange(selectedQuestion.index, 1)}
-                checked={questions[selectedQuestion.index].answers[1].isCorrect}
+              <div
+                style={{
+                  backgroundColor: questions[selectedQuestion.index].imageSrc
+                    ? "transparent"
+                    : "#f0eded",
+                }}
+                className="insertImage border rounded m-2 text-center"
+                onClick={() => fileInputRef.current.click()}
+              >
+                {questions[selectedQuestion.index].showText && (
+                  <div style={{ color: "#6949FF" }}>
+                    <InsertPhotoIcon />
+                    <div>Add Cover Image</div>
+                  </div>
+                )}
+                {questions[selectedQuestion.index].imageSrc && (
+                  <img
+                    style={{
+                      maxWidth: "100%",
+                      maxHeight: "100%",
+                      objectFit: "cover",
+                    }}
+                    src={questions[selectedQuestion.index].imageSrc}
+                    alt="Selected Image"
+                  />
+                )}
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                multiple={false}
+                onChange={(e) => handleImageChange(e)}
+                ref={fileInputRef}
+                style={{ display: "none" }}
               />
-            </div>
-            {questions[selectedQuestion.index].answers.length > 2 ? (
               <div className="answers">
                 <textarea
                   style={{
-                    backgroundColor: "#FF981F",
-                    border: "2px solid #FF981F",
+                    backgroundColor: "#3779FF",
+                    border: "2px solid #3779FF",
                   }}
                   maxLength="200"
                   type="text"
-                  placeholder="Add answer 3"
-                  className="textarea my-4 p-3 m-2 text-center text-white"
+                  placeholder="Add answer 1"
+                  className="textarea my-4 p-3 m-2 text-white"
                   onChange={(e) =>
-                    handleAnswerChange(e, selectedQuestion.index, 2)
+                    handleAnswerChange(e, selectedQuestion.index, 0)
                   }
-                  value={questions[selectedQuestion.index].answers[2].text}
+                  value={questions[selectedQuestion.index].answers[0].text}
                 />
                 <Checkbox
                   style={{ color: "#6949FF" }}
                   disabled={
-                    questions[selectedQuestion.index].answers[2].disabled
+                    questions[selectedQuestion.index].answers[0].disabled
                   }
                   onChange={() =>
-                    handleCheckboxChange(selectedQuestion.index, 2)
+                    handleCheckboxChange(selectedQuestion.index, 0)
                   }
                   checked={
-                    questions[selectedQuestion.index].answers[2].isCorrect
+                    questions[selectedQuestion.index].answers[0].isCorrect
                   }
                 />
                 <textarea
                   style={{
-                    backgroundColor: "#12D18E",
-                    border: "2px solid #12D18E",
+                    backgroundColor: "#F75555",
+                    border: "2px solid #F75555",
                   }}
                   maxLength="200"
                   type="text"
-                  placeholder="Add answer 4"
+                  placeholder="Add answer 2"
                   className="textarea my-4 p-3 m-2 text-center text-white"
                   onChange={(e) =>
-                    handleAnswerChange(e, selectedQuestion.index, 3)
+                    handleAnswerChange(e, selectedQuestion.index, 1)
                   }
-                  value={questions[selectedQuestion.index].answers[3].text}
+                  value={questions[selectedQuestion.index].answers[1].text}
                 />
                 <Checkbox
                   style={{ color: "#6949FF" }}
                   disabled={
-                    questions[selectedQuestion.index].answers[3].disabled
+                    questions[selectedQuestion.index].answers[1].disabled
                   }
                   onChange={() =>
-                    handleCheckboxChange(selectedQuestion.index, 3)
+                    handleCheckboxChange(selectedQuestion.index, 1)
                   }
                   checked={
-                    questions[selectedQuestion.index].answers[3].isCorrect
+                    questions[selectedQuestion.index].answers[1].isCorrect
                   }
                 />
               </div>
-            ) : (
-              ""
-            )}
-            {questions[selectedQuestion.index].answers.length > 2 ? (
-              <button
-                className="add-remove-answers text-white p-3"
-                onClick={removeLastTwoAnswers}
-              >
-                Remove Answers
-              </button>
-            ) : (
-              <button
-                className="add-remove-answers text-white p-3"
-                onClick={addLastTwoAnswers}
-              >
-                Add Answers
-              </button>
-            )}
-          </form>
-        </div>
-      )}
+              {questions[selectedQuestion.index].answers.length > 2 ? (
+                <div className="answers">
+                  <textarea
+                    style={{
+                      backgroundColor: "#FF981F",
+                      border: "2px solid #FF981F",
+                    }}
+                    maxLength="200"
+                    type="text"
+                    placeholder="Add answer 3"
+                    className="textarea my-4 p-3 m-2 text-center text-white"
+                    onChange={(e) =>
+                      handleAnswerChange(e, selectedQuestion.index, 2)
+                    }
+                    value={questions[selectedQuestion.index].answers[2].text}
+                  />
+                  <Checkbox
+                    style={{ color: "#6949FF" }}
+                    disabled={
+                      questions[selectedQuestion.index].answers[2].disabled
+                    }
+                    onChange={() =>
+                      handleCheckboxChange(selectedQuestion.index, 2)
+                    }
+                    checked={
+                      questions[selectedQuestion.index].answers[2].isCorrect
+                    }
+                  />
+                  <textarea
+                    style={{
+                      backgroundColor: "#12D18E",
+                      border: "2px solid #12D18E",
+                    }}
+                    maxLength="200"
+                    type="text"
+                    placeholder="Add answer 4"
+                    className="textarea my-4 p-3 m-2 text-center text-white"
+                    onChange={(e) =>
+                      handleAnswerChange(e, selectedQuestion.index, 3)
+                    }
+                    value={questions[selectedQuestion.index].answers[3].text}
+                  />
+                  <Checkbox
+                    style={{ color: "#6949FF" }}
+                    disabled={
+                      questions[selectedQuestion.index].answers[3].disabled
+                    }
+                    onChange={() =>
+                      handleCheckboxChange(selectedQuestion.index, 3)
+                    }
+                    checked={
+                      questions[selectedQuestion.index].answers[3].isCorrect
+                    }
+                  />
+                </div>
+              ) : (
+                ""
+              )}
+              {questions[selectedQuestion.index].answers.length > 2 ? (
+                <button
+                  className="add-remove-answers text-white p-3"
+                  onClick={removeLastTwoAnswers}
+                >
+                  Remove Answers
+                </button>
+              ) : (
+                <button
+                  className="add-remove-answers text-white p-3"
+                  onClick={addLastTwoAnswers}
+                >
+                  Add Answers
+                </button>
+              )}
+            </form>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
