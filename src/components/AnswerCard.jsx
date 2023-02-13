@@ -1,21 +1,16 @@
 import React from "react";
 
-const AnswerCard = ({answer, color, myFunc}) => {
+const AnswerCard = ({ answer, color, myFunc }) => {
+  // const cardColors = ["bg-teal", "bg-indigo", "bg-green", "bg-red"];
+  // let color = cardColors[(Math.random() * cardColors.length) | 0];
+
+  const cardClassName = `block p-6 ${color}-500 border rounded-lg w-full pt-10 pb-10 text-xl shadow hover:${color}-800 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`;
   return (
-    <div
-        onClick={() => myFunc()}
-    >
-      <a
-        href="#"
-        class="block max-w-sm p-6 bg-white border rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      >
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+    <div onClick={() => myFunc()}>
+      <a href="#" class={cardClassName}>
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white dark:text-white">
           {answer}
         </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
-          Here are the biggest enterprise technology acquisitions of 2021 so
-          far, in reverse chronological order.
-        </p>
       </a>
     </div>
   );

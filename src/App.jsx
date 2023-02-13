@@ -2,6 +2,10 @@ import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import AnswerCard from "./components/AnswerCard";
+import "react-circular-progressbar/dist/styles.css";
+import TimeUp from "./components/TimeUp";
+import Timer from "./components/Timer";
+
 import socket from "../socket";
 
 function App() {
@@ -12,14 +16,10 @@ function App() {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
   const [timer, setTimer] = useState(0);
-
-  socket.on("sendQuestionToClient", (questionObj) => {
-    setQuestion(questionObj);
-    // console.log(questionObj);
-    if (questionObj && questionObj.Answers) {
-      setAnswers(questionObj.Answers);
-    }
-  });
+  const [showTimer, setShowTimer] = useState(true);
+  const [showTimeUp, setShowTimeUp] = useState(false);
+  const [playerHasAnswered, setPlayerHasAnswered] = useState(false);
+  let idx = -1;
 
   useEffect(() => {
     socket.emit("connection", "Hello from client");
@@ -34,8 +34,23 @@ function App() {
 
     socket.on("sendQuestionToClient", (questionObj) => {
       setQuestion(questionObj);
+      setShowLeaderboard(false);
+      setShowTimer(true);
       if (questionObj && questionObj.Answers) {
-        setAnswers(questionObj.Answers);
+        function shuffleObject(questionObj) {
+          let shuffled = {};
+          let keys = Object.keys(questionObj.Answers);
+          keys.sort(function () {
+            return 0.5 - Math.random();
+          });
+          for (let i = 0; i < keys.length; i++) {
+            shuffled[keys[i]] = questionObj.Answers[keys[i]];
+          }
+          console.log(shuffled);
+          setAnswers(shuffled);
+          setPlayerHasAnswered(false);
+        }
+        shuffleObject(questionObj);
       }
     });
     socket.on("gameOver", (score) => {
@@ -44,9 +59,16 @@ function App() {
       // console.log(score);
     });
 
+    socket.on("timesUp", (score) => {
+      setShowTimer(false);
+      setShowTimeUp(true);
+      console.log("Times up");
+    });
+
     socket.on("sendLeaderboardToClient", (leaderboardObj) => {
       setLeaderboard(Object.entries(leaderboardObj));
       setShowLeaderboard(true);
+      setShowTimeUp(false);
       // console.log(leaderboardObj);
       leaderboard.forEach((user) => {
         console.log(user);
@@ -54,14 +76,12 @@ function App() {
     });
 
     socket.on("sendTimerToClient", (time) => {
-      // console.log(time);
       setTimer(time);
     });
   }, []);
 
   const handleAnswer = (isCorrect) => {
-    // console.log(isCorrect);
-    // socket.emit("sendAnswerToServer", isCorrect);
+    setPlayerHasAnswered(true);
     socket.emit("sendAnswerToServer", {
       username: username,
       isCorrect: isCorrect,
@@ -72,12 +92,12 @@ function App() {
     <div className="App">
       {gameOver ? <h1>Game Over</h1> : null}
       {
-        // convert timer to minutes and seconds
-        timer > 0 ? (
-          <h1>
-            {Math.floor(timer / 1000)}:{timer % 100}
-            {/* {Math.floor(timer / 1000)} */}
-          </h1>
+        showTimer && timer > 0 ? (
+          <div className="container w-40">
+            <Timer timer={timer} />
+          </div>
+        ) : showTimeUp ? (
+          <TimeUp text={"Temps écoulé !"} />
         ) : null
       }
       {showLeaderboard && leaderboard !== null && leaderboard.length > 0 ? (
@@ -95,20 +115,36 @@ function App() {
         </div>
       ) : (
         <>
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-            {question && question.Question ? question.Question : "Question"}
-          </h5>
+          {showTimer && (
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              {question && question.Question
+                ? question.Question
+                : "Waiting for question to be initialized.."}
+            </h5>
+          )}
 
-          {answers &&
-            Object.entries(answers).map(([answer, isCorrect]) => {
-              return (
-                <AnswerCard
-                  answer={answer}
-                  isCorrect={isCorrect}
-                  myFunc={() => handleAnswer(isCorrect)}
-                />
-              );
-            })}
+          <div className="grid grid-cols-2 gap-6">
+            {answers &&
+              showTimer &&
+              !playerHasAnswered &&
+              Object.entries(answers).map(([answer, isCorrect]) => {
+                const cardColors = [
+                  "bg-teal",
+                  "bg-indigo",
+                  "bg-green",
+                  "bg-red",
+                ];
+                idx++;
+                return (
+                  <AnswerCard
+                    answer={answer}
+                    color={cardColors[idx]}
+                    isCorrect={isCorrect}
+                    myFunc={() => handleAnswer(isCorrect)}
+                  />
+                );
+              })}
+          </div>
         </>
       )}
     </div>
