@@ -1,14 +1,13 @@
 import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-import AnswerCard from "./components/AnswerCard";
+import "../App.css";
+import AnswerCard from "../components/AnswerCard";
 import "react-circular-progressbar/dist/styles.css";
-import AnimatedTexte from "./components/AnimatedText";
-import Timer from "./components/Timer";
-import socket from "../socket";
-import Leaderboard from "./components/Leaderboard";
+import AnimatedTexte from "../components/AnimatedText";
+import Timer from "../components/Timer";
+import socket from "../helpers/socket";
+import Leaderboard from "../components/Leaderboard";
 
-function Main() {
+function MainApp() {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -145,4 +144,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default MainApp;
