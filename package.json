@@ -14,6 +14,9 @@
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.6",
     "react": "^18.2.0",
+    "react-animated-components": "^4.0.0",
+    "react-animated-text-content": "^1.0.1",
+    "react-circular-progressbar": "^2.1.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.8.0",
     "socket.io-client": "^4.5.4"
