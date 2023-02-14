@@ -3,16 +3,16 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import AnswerCard from "./components/AnswerCard";
 import "react-circular-progressbar/dist/styles.css";
-import TimeUp from "./components/TimeUp";
+import AnimatedTexte from "./components/AnimatedText";
 import Timer from "./components/Timer";
-
 import socket from "../socket";
+import Leaderboard from "./components/Leaderboard";
 
 function App() {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
   const [gameOver, setGameOver] = useState(false);
-  const [username, setUsername] = useState("Heyy");
+  const [username, setUsername] = useState("HermannCool");
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboard, setLeaderboard] = useState([]);
   const [timer, setTimer] = useState(0);
@@ -90,49 +90,43 @@ function App() {
 
   return (
     <div className="App">
-      {gameOver ? <h1>Game Over</h1> : null}
-      {
-        showTimer && timer > 0 ? (
-          <div className="container w-40">
-            <Timer timer={timer} />
-          </div>
-        ) : showTimeUp ? (
-          <TimeUp text={"Temps écoulé !"} />
-        ) : null
-      }
-      {showLeaderboard && leaderboard !== null && leaderboard.length > 0 ? (
-        <div>
-          <h1>Leaderboard</h1>
-          {leaderboard.map((user) => {
-            return (
-              <>
-                <h1>{user[1].username}</h1>
-                <h1>{user[1].score}</h1>
-                <br />
-              </>
-            );
-          })}
+      {gameOver ? null : null}
+      {showTimer && timer > 0 ? (
+        <div className="container w-40 h-40">
+          <Timer timer={timer} />
         </div>
+      ) : showTimeUp ? (
+        <AnimatedTexte text={"Temps écoulé !"} />
+      ) : null}
+      {showLeaderboard && leaderboard !== null && leaderboard.length > 0 ? (
+        <Leaderboard leaderboard={leaderboard} />
       ) : (
-        <>
+        <div className="container mt-20 flex justify-center items-center flex-col w-full">
           {showTimer && (
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-              {question && question.Question
-                ? question.Question
-                : "Waiting for question to be initialized.."}
-            </h5>
+            <div className="container">
+              <img class="object-cover h-48 mx-auto" src={question.imgURL} />
+              <h5 class=" text-2xl mb-20 mt-20 tracking-tight text-gray-900 dark:text-white">
+                {question && question.Question ? (
+                  question.Question
+                ) : (
+                  <AnimatedTexte
+                    text={"Quiz en cours de chargement, veuillez patienter.."}
+                  />
+                )}
+              </h5>
+            </div>
           )}
 
-          <div className="grid grid-cols-2 gap-6">
+          <div className="grid grid-cols-2 gap-6 w-full">
             {answers &&
               showTimer &&
               !playerHasAnswered &&
               Object.entries(answers).map(([answer, isCorrect]) => {
                 const cardColors = [
-                  "bg-teal",
-                  "bg-indigo",
-                  "bg-green",
-                  "bg-red",
+                  "bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500",
+                  "bg-gradient-to-r from-cyan-500 via-emerald-500 to-green-500",
+                  "bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500",
+                  "bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500",
                 ];
                 idx++;
                 return (
@@ -145,7 +139,7 @@ function App() {
                 );
               })}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
