@@ -1,16 +1,43 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "./QuizCreationModal.css";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
+import { storage } from "../firebase-config";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
   const fileInputRef = useRef(null);
+  const [isQuizFormValid, setIsQuizFormValid] = useState(false);
+  const [isCancelValid, setIsCancelValid] = useState(false);
+  const [perc, setPerc] = useState(null);
   const [quizInfoTemp, setQuizInfoTemp] = useState({
     title: "",
     topic: "",
+    img: "",
     image: "",
     imageSrc: null,
     showText: true,
   });
+
+  useEffect(() => {
+    if (
+      quizInfo.title !== "" &&
+      quizInfo.topic !== "" &&
+      quizInfo.showText == false
+    ) {
+      setIsCancelValid(true);
+    } else {
+      setIsCancelValid(false);
+    }
+    if (
+      quizInfoTemp.title !== "" &&
+      quizInfoTemp.topic !== "" &&
+      quizInfoTemp.showText == false
+    ) {
+      setIsQuizFormValid(true);
+    } else {
+      setIsQuizFormValid(false);
+    }
+  }, [quizInfo, quizInfoTemp.title, quizInfoTemp.topic, quizInfoTemp.showText]);
 
   const handleTitleChange = (e) => {
     const newQuizInfoTemp = { ...quizInfoTemp };
@@ -26,15 +53,56 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
 
   const handleImageChange = (e) => {
     if (e.target.files.length > 0) {
-      const newQuizInfoTemp = {...quizInfoTemp};
+      const newQuizInfoTemp = { ...quizInfoTemp };
       const imageFile = e.target.files[0];
       const objectUrl = URL.createObjectURL(imageFile);
       newQuizInfoTemp.imageSrc = objectUrl;
       newQuizInfoTemp.showText = false;
       newQuizInfoTemp.image = imageFile;
-      setQuizInfoTemp(newQuizInfoTemp);
+      // Upload the image to Firebase Storage
+      const storageRef = ref(storage, imageFile.name);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+          setPerc(progress);
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            newQuizInfoTemp.img = downloadURL;
+            setQuizInfoTemp(newQuizInfoTemp);
+          });
+        }
+      );
     } else {
-      const newQuizInfoTemp = {...quizInfoTemp};
+      const newQuizInfoTemp = { ...quizInfoTemp };
+      newQuizInfoTemp.img = "";
       newQuizInfoTemp.image = "";
       newQuizInfoTemp.imageSrc = null;
       newQuizInfoTemp.showText = true;
@@ -146,7 +214,9 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
                 height: "40%",
               }}
             >
-              <label style={{paddingTop: "20px"}} className="font-bold">Cover Image:</label>
+              <label style={{ paddingTop: "20px" }} className="font-bold">
+                Cover Image:
+              </label>
               <div
                 style={{
                   backgroundColor: quizInfoTemp.imageSrc
@@ -192,6 +262,7 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
             }}
           >
             <button
+              disabled={!isCancelValid || (perc !== null && perc < 100)}
               className="modalButton1 text-black p-3"
               onClick={cancelSummary}
               style={{ marginRight: "10px" }}
@@ -199,6 +270,7 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
               Cancel
             </button>
             <button
+              disabled={!isQuizFormValid || (perc !== null && perc < 100)}
               className="modalButton2 text-white p-3"
               onClick={saveSummary}
             >

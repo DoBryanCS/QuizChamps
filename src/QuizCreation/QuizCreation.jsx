@@ -5,15 +5,25 @@ import QuizCreationModal from "./QuizCreationModal";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import "./QuizCreation.css";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { storage } from "../firebase-config";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function QuizCreation() {
   const [showPopup, setShowPopup] = useState(true);
 
   const fileInputRef = useRef(null);
-  const [quizInfo, setQuizInfo] = useState({ title: "", topic: "", image: "", imageSrc: "", showText: "true"});
+  const [quizInfo, setQuizInfo] = useState({
+    title: "",
+    topic: "",
+    img: "",
+    image: "",
+    imageSrc: "",
+    showText: "true",
+  });
   const [questions, setQuestions] = useState([
     {
       question: "",
+      img: "",
       image: "",
       imageSrc: null,
       showText: true,
@@ -35,6 +45,7 @@ function QuizCreation() {
     setQuestions(
       questions.concat({
         question: "",
+        img: "",
         image: "",
         imageSrc: null,
         showText: true,
@@ -95,9 +106,47 @@ function QuizCreation() {
       newQuestions[selectedQuestion.index].imageSrc = objectUrl;
       newQuestions[selectedQuestion.index].showText = false;
       newQuestions[selectedQuestion.index].image = imageFile;
-      setQuestions(newQuestions);
+
+      // Upload the image to Firebase Storage
+      const storageRef = ref(storage, imageFile.name);
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+
+      // Register three observers:
+      // 1. 'state_changed' observer, called any time the state changes
+      // 2. Error observer, called on failure
+      // 3. Completion observer, called on successful completion
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          switch (snapshot.state) {
+            case "paused":
+              console.log("Upload is paused");
+              break;
+            case "running":
+              console.log("Upload is running");
+              break;
+            default:
+              break;
+          }
+        },
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log(error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            newQuestions[selectedQuestion.index].img = downloadURL;
+            setQuestions(newQuestions);
+          });
+        }
+      );
     } else {
       const newQuestions = [...questions];
+      newQuestions[selectedQuestion.index].img = "";
       newQuestions[selectedQuestion.index].image = "";
       newQuestions[selectedQuestion.index].imageSrc = null;
       newQuestions[selectedQuestion.index].showText = true;
@@ -129,9 +178,45 @@ function QuizCreation() {
     setQuestions(updatedQuestions);
   };
 
+  function generateQuizObject(questions, img, title, topic) {
+    const quiz = {};
+    questions.forEach((question, index) => {
+      const answers = {};
+      question.answers.forEach((answer) => {
+        answers[answer.text] = answer.isCorrect;
+      });
+      quiz[`Question ${index + 1}`] = {
+        Answers: answers,
+        Question: question.question,
+        imgURL: question.img,
+      };
+    });
+    quiz.img = img;
+    quiz.creator = "allo";
+    quiz.topic = topic;
+    quiz.userID = "allo";
+    return { [title]: quiz };
+  }
+
   const saveQuestions = () => {
-    console.log(questions);
+    const formattedData = generateQuizObject(
+      questions,
+      quizInfo.img,
+      quizInfo.title,
+      quizInfo.topic
+    );
+    console.log(formattedData);
+    /*   fetch("http://localhost:3000/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formattedData),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error)); */
   };
+
+  saveQuestions();
 
   return (
     <div>
@@ -269,7 +354,7 @@ function QuizCreation() {
                   value={questions[selectedQuestion.index].answers[0].text}
                 />
                 <Checkbox
-                  style={{ color: "#6949FF" }}
+                  className="checkbox"
                   disabled={
                     questions[selectedQuestion.index].answers[0].disabled
                   }
@@ -295,7 +380,7 @@ function QuizCreation() {
                   value={questions[selectedQuestion.index].answers[1].text}
                 />
                 <Checkbox
-                  style={{ color: "#6949FF" }}
+                  className="checkbox"
                   disabled={
                     questions[selectedQuestion.index].answers[1].disabled
                   }
@@ -324,7 +409,7 @@ function QuizCreation() {
                     value={questions[selectedQuestion.index].answers[2].text}
                   />
                   <Checkbox
-                    style={{ color: "#6949FF" }}
+                    className="checkbox"
                     disabled={
                       questions[selectedQuestion.index].answers[2].disabled
                     }
@@ -350,7 +435,7 @@ function QuizCreation() {
                     value={questions[selectedQuestion.index].answers[3].text}
                   />
                   <Checkbox
-                    style={{ color: "#6949FF" }}
+                    className="checkbox"
                     disabled={
                       questions[selectedQuestion.index].answers[3].disabled
                     }

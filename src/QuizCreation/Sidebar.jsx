@@ -44,10 +44,14 @@ function Sidebar({
             key={index}
             onClick={() => selectQuestion(question.question, index)}
           >
-            <DeleteIcon
-              onClick={(event) => handleDelete(index, event)}
-              className="deleteIcon"
-            />
+            {index != 0 ? (
+              <DeleteIcon
+                onClick={(event) => handleDelete(index, event)}
+                className="deleteIcon"
+              />
+            ) : (
+              ""
+            )}
             <div className="square">
               <div style={{ fontSize: "10px", color: "white" }}>
                 {index + 1}

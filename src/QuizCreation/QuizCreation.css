@@ -109,6 +109,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
+  cursor: pointer;
+}
+
+.checkbox {
+  color: "#6949ff";
+}
+
+.checkbox:disabled {
+  opacity: 0.5; /* reduce opacity to indicate the button is disabled */
+  cursor: not-allowed; /* change the cursor to not-allowed */
 }
 
 @media screen and (max-width: 920px) {
