@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import socket from "../socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Identification from "./Identification";
+import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
+
+export const UnContexte = React.createContext();
 
 function App() {
   socket.on("connect", () => {
@@ -14,6 +17,9 @@ function App() {
   useEffect(() => {
     socket.emit("connection", "Hello from client");
   }, []);
+
+  const [Modal, setModal] = useState(false);
+  const object = { Modal, setModal };
 
   return (
     /**<div className="App">
@@ -32,11 +38,14 @@ function App() {
     </div>*/
     <div className="bg-indigo-900">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<NoMatch />} />
-          <Route path="/Identification" element={<Identification />} />
-          <Route path="*" element={<NoMatch />} />
-        </Routes>
+        <UnContexte.Provider value={object}>
+          <Menu />
+          <Routes>
+            <Route path="/" element={<NoMatch />} />
+            <Route path="/Identification" element={<Identification />} />
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </UnContexte.Provider>
       </BrowserRouter>
     </div>
   );
