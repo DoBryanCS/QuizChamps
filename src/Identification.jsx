@@ -101,10 +101,10 @@ const signInWithGoogle = () => {
 
 
   return (
-    <div className="py-72 px-28">
+    <div className="flex justify-center items-center h-screen">
       <div>
         {showModal && (
-          <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center bg-indigo-900">
+          <div className="align-center h-64 w-64 flex items-center justify-center static">
             <div className="bg-white p-6 rounded-lg">
               <form className="pb-2">
                 <h2 className="text-lg font-medium mb-4">Login</h2>
@@ -157,7 +157,7 @@ const signInWithGoogle = () => {
       </div>
       <div>
         {!showModal && (
-          <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center bg-indigo-900">
+          <div className="align-center h-64 w-64 flex items-center justify-center static">
             <div className="bg-white p-6 rounded-lg">
               <form className="pb-2">
                 <h2 className="text-lg font-medium mb-4">Sign Up</h2>
