@@ -11,10 +11,12 @@
 .textarea::placeholder {
   color: white;
   text-align: center;
+  font-weight: bold;
 }
 
 .question-input::placeholder {
   color: #888888;
+  font-weight: bold;
 }
 
 .answers {
@@ -110,6 +112,7 @@
   flex-direction: row;
   align-items: center;
   cursor: pointer;
+  gap: 20px;
 }
 
 .checkbox {
@@ -167,9 +170,6 @@
   }
   .addSettings {
     flex-direction: column;
-  }
-
-  .addQuestion {
-    margin-bottom: 20px;
+    gap: 0;
   }
 }

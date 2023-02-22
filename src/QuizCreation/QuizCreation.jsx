@@ -2,16 +2,24 @@ import { useState, useRef } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
 import QuizCreationModal from "./QuizCreationModal";
+import MissingInfoModal from "./MissingInfoModal";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import "./QuizCreation.css";
 import SettingsIcon from "@mui/icons-material/Settings";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import SaveIcon from "@mui/icons-material/Save";
 import { storage } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 function QuizCreation() {
-  const [showPopup, setShowPopup] = useState(true);
+  const [showPopup, setShowPopup] = useState(true); // initialize state for the modal popup
+  const [missingInfoModalOpen, setMissingInfoModalOpen] = useState(false);
+  const [missingQuestions, setMissingQuestions] = useState([]);
 
+  // create a reference to the file input element
   const fileInputRef = useRef(null);
+
+  // initialize state for quiz info
   const [quizInfo, setQuizInfo] = useState({
     title: "",
     topic: "",
@@ -20,6 +28,8 @@ function QuizCreation() {
     imageSrc: "",
     showText: "true",
   });
+
+  // initialize state for questions
   const [questions, setQuestions] = useState([
     {
       question: "",
@@ -35,11 +45,14 @@ function QuizCreation() {
       ],
     },
   ]);
+
+  // initialize state for selected question
   const [selectedQuestion, setSelectedQuestion] = useState({
     question: "",
     index: 0,
   });
 
+  // function to add a new question
   const addQuestion = (event) => {
     event.preventDefault();
     setQuestions(
@@ -61,6 +74,7 @@ function QuizCreation() {
     setSelectedQuestion({ question: "", index: questions.length });
   };
 
+  // function to handle changes in a question
   const handleQuestionChange = (e, index) => {
     const updatedQuestions = [...questions];
     updatedQuestions[index].question = e.target.value;
@@ -68,41 +82,56 @@ function QuizCreation() {
     setSelectedQuestion({ question: e.target.value, index });
   };
 
+  // function to select a question
   const selectQuestion = (question, index) => {
     setSelectedQuestion({ question, index });
   };
 
+  // function to handle changes in an answer
   const handleAnswerChange = (e, questionIndex, answerIndex) => {
     const updatedQuestions = [...questions];
     updatedQuestions[questionIndex].answers[answerIndex].text = e.target.value;
     setQuestions(updatedQuestions);
   };
 
+  // function to handle checkbox changes for correct answers
   const handleCheckboxChange = (questionIndex, answerIndex) => {
+    // make a copy of the questions array to avoid mutating the state directly
     const updatedQuestions = [...questions];
+
+    // update the isCorrect property of the selected answer
     updatedQuestions[questionIndex].answers[answerIndex].isCorrect =
       !updatedQuestions[questionIndex].answers[answerIndex].isCorrect;
+
+    // if the selected answer is marked as correct
     if (
       updatedQuestions[questionIndex].answers[answerIndex].isCorrect === true
     ) {
+      // disable all the other answer options
       for (let i = 0; i < updatedQuestions[questionIndex].answers.length; i++) {
         if (i !== answerIndex) {
           updatedQuestions[questionIndex].answers[i].disabled = true;
         }
       }
     } else {
+      // if the selected answer is not marked as correct
+      // enable all the other answer options
       for (let i = 0; i < updatedQuestions[questionIndex].answers.length; i++) {
         updatedQuestions[questionIndex].answers[i].disabled = false;
       }
     }
+    // update the state with the modified questions array
     setQuestions(updatedQuestions);
   };
 
+  // function to handle image changes
   const handleImageChange = (e) => {
     if (e.target.files.length > 0) {
+      // make a copy of the questions array to avoid mutating the state directly
       const newQuestions = [...questions];
       const imageFile = e.target.files[0];
       const objectUrl = URL.createObjectURL(imageFile);
+      // update the image source and hide the text if an image is selected
       newQuestions[selectedQuestion.index].imageSrc = objectUrl;
       newQuestions[selectedQuestion.index].showText = false;
       newQuestions[selectedQuestion.index].image = imageFile;
@@ -145,7 +174,10 @@ function QuizCreation() {
         }
       );
     } else {
+      // if no image is selected
+      // make a copy of the questions array to avoid mutating the state directly
       const newQuestions = [...questions];
+      // reset the image properties and show the text
       newQuestions[selectedQuestion.index].img = "";
       newQuestions[selectedQuestion.index].image = "";
       newQuestions[selectedQuestion.index].imageSrc = null;
@@ -154,14 +186,24 @@ function QuizCreation() {
     }
   };
 
+  // This function removes the last two answers from the selected question in the state object and updates it.
   const removeLastTwoAnswers = (event) => {
     event.preventDefault();
     const updatedQuestions = [...questions];
     updatedQuestions[selectedQuestion.index].answers.pop();
     updatedQuestions[selectedQuestion.index].answers.pop();
+    for (
+      let i = 0;
+      i < updatedQuestions[selectedQuestion.index].answers.length;
+      i++
+    ) {
+      updatedQuestions[selectedQuestion.index].answers[i].disabled = false;
+      updatedQuestions[selectedQuestion.index].answers[i].isCorrect = false;
+    }
     setQuestions(updatedQuestions);
   };
 
+  // This function adds two new answer objects to the selected question in the state object and updates it.
   const addLastTwoAnswers = (event) => {
     event.preventDefault();
     const updatedQuestions = [...questions];
@@ -175,9 +217,18 @@ function QuizCreation() {
       isCorrect: false,
       disabled: false,
     });
+    for (
+      let i = 0;
+      i < updatedQuestions[selectedQuestion.index].answers.length;
+      i++
+    ) {
+      updatedQuestions[selectedQuestion.index].answers[i].disabled = false;
+      updatedQuestions[selectedQuestion.index].answers[i].isCorrect = false;
+    }
     setQuestions(updatedQuestions);
   };
 
+  // This function generates a quiz object from the questions, image URL, title, and topic provided.
   function generateQuizObject(questions, img, title, topic) {
     const quiz = {};
     questions.forEach((question, index) => {
@@ -198,25 +249,82 @@ function QuizCreation() {
     return { [title]: quiz };
   }
 
-  const saveQuestions = () => {
-    const formattedData = generateQuizObject(
-      questions,
-      quizInfo.img,
-      quizInfo.title,
-      quizInfo.topic
-    );
-    console.log(formattedData);
-    /*   fetch("http://localhost:3000/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formattedData),
-    })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error)); */
-  };
+  function validateQuestions() {
+    let missingQuestions = [];
 
-  saveQuestions();
+    // Check each question for missing information
+    for (let i = 0; i < questions.length; i++) {
+      let question = questions[i];
+      let missingInfo = [];
+
+      // Check question text
+      if (!question.question) {
+        missingInfo.push("Question missing");
+      }
+
+      // Check answer text
+      let answersMissing = question.answers.filter(
+        (answer) => !answer.text
+      ).length;
+      if (answersMissing > 0) {
+        missingInfo.push(`${answersMissing} answer(s) missing`);
+      }
+
+      // Check each answer
+      for (let j = 0; j < question.answers.length; j++) {
+        let answer = question.answers[j];
+
+        // Check if answer is correct
+        if (answer.isCorrect) {
+          break;
+        }
+
+        // If all answers have been checked and none are correct, add missing information
+        if (j === question.answers.length - 1) {
+          missingInfo.push("Correct answer not selected ");
+        }
+      }
+
+      // Add question and missing information to list if there is missing information
+      if (missingInfo.length > 0) {
+        missingQuestions.push({
+          number: i + 1,
+          info: missingInfo,
+        });
+      }
+    }
+
+    // If there are no missing questions, return true
+    if (missingQuestions.length === 0) {
+      return null;
+    } else {
+      return missingQuestions;
+    }
+  }
+
+  // This function formats and sends the quiz data to a server for saving.
+  const saveQuestions = () => {
+    const validationErrors = validateQuestions();
+    if (validationErrors) {
+      setMissingInfoModalOpen(true);
+      setMissingQuestions(validationErrors);
+    } else {
+      const formattedData = generateQuizObject(
+        questions,
+        quizInfo.img,
+        quizInfo.title,
+        quizInfo.topic
+      );
+      fetch("http://localhost:3000/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formattedData),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error(error));
+    }
+  };
 
   return (
     <div>
@@ -227,6 +335,13 @@ function QuizCreation() {
           show={showPopup}
           setShow={setShowPopup}
         ></QuizCreationModal>
+      </div>
+      <div>
+        <MissingInfoModal
+          missingInfoModalOpen={missingInfoModalOpen}
+          setMissingInfoModalOpen={setMissingInfoModalOpen}
+          missingQuestions={missingQuestions}
+        ></MissingInfoModal>
       </div>
 
       <div
@@ -252,25 +367,20 @@ function QuizCreation() {
               }}
             >
               <div className="addSettings">
-                <button
-                  style={{
-                    backgroundColor: "#6949FF",
-                    border: "2px solid #6949FF",
-                    borderRadius: "15px",
-                    boxShadow: "10px 10px 10px #888888",
-                    marginRight: "10px",
-                  }}
+                <AddCircleIcon
                   onClick={addQuestion}
-                  className="addQuestion text-white p-4 rounded"
-                >
-                  +
-                </button>
+                  style={{ color: "#6949FF" }}
+                ></AddCircleIcon>
                 <SettingsIcon
-                  style={{ color: "#888888" }}
+                  style={{ color: "#6949FF" }}
                   onClick={() => setShowPopup(true)}
                 >
                   Settings
                 </SettingsIcon>
+                <SaveIcon
+                  onClick={saveQuestions}
+                  style={{ color: "#6949FF" }}
+                ></SaveIcon>
               </div>
             </div>
           </div>
@@ -313,7 +423,7 @@ function QuizCreation() {
                 onClick={() => fileInputRef.current.click()}
               >
                 {questions[selectedQuestion.index].showText && (
-                  <div style={{ color: "#6949FF" }}>
+                  <div style={{ color: "#6949FF", fontWeight: "bold" }}>
                     <InsertPhotoIcon />
                     <div>Add Cover Image</div>
                   </div>
@@ -452,7 +562,7 @@ function QuizCreation() {
               )}
               {questions[selectedQuestion.index].answers.length > 2 ? (
                 <button
-                  className="add-remove-answers text-white p-3"
+                  className="add-remove-answers text-white p-3 font-bold"
                   onClick={removeLastTwoAnswers}
                 >
                   Remove Answers
