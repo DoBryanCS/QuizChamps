@@ -1,34 +1,8 @@
 import React, { useState } from "react";
-/**
-import firebase from 'firebase/app';
-import 'firebase/auth';
-
-// Initialize Firebase
-firebase.initializeApp({
-  apiKey: "AIzaSyDZ_yT90A1M4pe66uGRoMGeUvxeIuKdGqo",
-  authDomain: "quizchamp-c9a1c.firebaseapp.com",
-  databaseURL: "https://quizchamp-c9a1c-default-rtdb.firebaseio.com",
-  projectId: "quizchamp-c9a1c",
-  storageBucket: "quizchamp-c9a1c.appspot.com",
-  messagingSenderId: "201894449283",
-  appId: "1:201894449283:web:09093af315b438b11acbb6",
-  measurementId: "G-35M5JQ1HVL"
-});
-
-const auth = firebase.auth();
-//stockage
-//const firestore = firebase.firestore();
-
-// Function login with google
-const handleGoogleSignIn = async () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  try {
-    const result = await auth.signInWithPopup(provider);
-    setUser(result.user);
-  } catch (error) {
-    console.log(error);
-  }
-}; */
+//import { auth } from "../firebase";
+import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {auth} from "../Firebase";
+import { useNavigate } from "react-router-dom";
 
 // Function logout with google
 /**const handleSignOut = async () => {
@@ -38,7 +12,6 @@ const handleGoogleSignIn = async () => {
     console.log(error);
   }
 };*/
-
 
 const Identification = () => {
   const [showModal, setShowModal] = useState(false);
@@ -52,53 +25,83 @@ const Identification = () => {
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConformPassword] = useState("");
 
-async function Login() {
-  try {
-    const response = await fetch('/api/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ Email, Password })
-    });
-    const data = await response.json();
-    if (data.success) {
-      return data.key;
-    } else {
-      throw new Error(data.error);
+  //navigation + keeping info in session storage
+  const navigate = useNavigate();
+  const leContext = useContext(UnContexte);
+  
+
+  //https://www.youtube.com/watch?v=PKwu15ldZ7k&ab_channel=WebDevSimplified
+  //https://github.com/WebDevSimplified/React-Firebase-Auth
+  async function Login() {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Email, Password }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        return data.key;
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-  } catch (error) {
-    console.error(error);
-    return null;
   }
-}
 
-async function SignUp() {
-  try {
-    const response = await fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ Email, Password })
-    });
-    const data = await response.json();
-    if (data.success) {
-      return data.key;
-    } else {
-      throw new Error(data.error);
+  async function SignUp() {
+    try {
+      const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ Email, Password }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        return data.key;
+      } else {
+        throw new Error(data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
     }
-  } catch (error) {
-    console.error(error);
-    return null;
   }
-}
 
-const signInWithGoogle = () => {
-  const provider = new firebase.auth.GoogleAuthProvider();
-  auth.signInWithPopup(provider);
-}
-
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider();
+    //const auth = getAuth();
+    //const auth = getAuth(app);
+    provider.setCustomParameters({
+      'login_hint': 'user@example.com'
+    });
+    /**const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
+    provider.setCustomParameters({
+      prompt: "select_account",
+      client_id: clientId,
+    });*/
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        const user = result.user;
+        console.log(user);
+        // Do something with the signed-in user
+        // Navigate to the home page
+          leContext.setTOKEN(resJson.token);
+          sessionStorage.setItem('token', resJson.token);
+          leContext.setEMAIL(email);
+          navigate("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        // Handle Errors here.
+      });
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">
@@ -161,7 +164,7 @@ const signInWithGoogle = () => {
             <div className="bg-white p-6 rounded-lg">
               <form className="pb-2">
                 <h2 className="text-lg font-medium mb-4">Sign Up</h2>
-                
+
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2">
                     Email
@@ -198,18 +201,20 @@ const signInWithGoogle = () => {
                     onChange={(e) => setConformPassword(e.target.value)}
                   />
                 </div>
-                { Password == ConfirmPassword && (<button
-                  className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                  onClick={SignUp}
+                {Password == ConfirmPassword && (
+                  <button
+                    className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                    onClick={SignUp}
+                  >
+                    Sign Up
+                  </button>
+                )}
+                <button
+                  className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
+                  onClick={handleToggleModal}
                 >
-                  Sign Up
-                </button>)}
-              <button
-                className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
-                onClick={handleToggleModal}
-              >
-                Login
-              </button>
+                  Login
+                </button>
               </form>
               <button
                 className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
