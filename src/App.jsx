@@ -19,8 +19,8 @@ function App() {
   }, []);
 
   const [Modal, setModal] = useState(false);
-  const [Token, setTOKEN] = useState("");
-  const object = { Modal, setModal, Token, setTOKEN };
+  const [UID, setUID] = useState("");
+  const object = { Modal, setModal, UID, setUID };
 
   return (
     /**<div className="App">

@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 //import { auth } from "../firebase";
-import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import {auth} from "../Firebase";
+import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../Firebase";
 import { useNavigate } from "react-router-dom";
+import { UnContexte } from "./App";
 
 // Function logout with google
 /**const handleSignOut = async () => {
@@ -28,50 +29,38 @@ const Identification = () => {
   //navigation + keeping info in session storage
   const navigate = useNavigate();
   const leContext = useContext(UnContexte);
-  
 
   //https://www.youtube.com/watch?v=PKwu15ldZ7k&ab_channel=WebDevSimplified
   //https://github.com/WebDevSimplified/React-Firebase-Auth
   async function Login() {
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Email, Password }),
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, Email, Password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(userCredential);
+        console.log(user);
+        leContext.setUID(user.uid);
+      }).then (() => { navigate("/")})
+      .catch((error) => {
+        console.log(error);
       });
-      const data = await response.json();
-      if (data.success) {
-        return data.key;
-      } else {
-        throw new Error(data.error);
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
   }
 
   async function SignUp() {
-    try {
-      const response = await fetch("/api/signup", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ Email, Password }),
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, Email, Password)
+      .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+        console.log(user);
+        leContext.setUID(user.uid);
+        //navigate("/");
+      }).then (() => { navigate("/")})
+      .catch((error) => {
+        console.log(error);
+        // ..
       });
-      const data = await response.json();
-      if (data.success) {
-        return data.key;
-      } else {
-        throw new Error(data.error);
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
   }
 
   const signInWithGoogle = () => {
@@ -79,7 +68,7 @@ const Identification = () => {
     //const auth = getAuth();
     //const auth = getAuth(app);
     provider.setCustomParameters({
-      'login_hint': 'user@example.com'
+      login_hint: "user@example.com",
     });
     /**const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
     provider.setCustomParameters({
@@ -92,10 +81,10 @@ const Identification = () => {
         console.log(user);
         // Do something with the signed-in user
         // Navigate to the home page
-          leContext.setTOKEN(resJson.token);
-          sessionStorage.setItem('token', resJson.token);
-          leContext.setEMAIL(email);
-          navigate("/");
+        //sessionStorage.setItem('UID', result.uid);
+        leContext.setUID(result.uid);
+        leContext.setName(result.displayName);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -135,12 +124,14 @@ const Identification = () => {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
-                <button
-                  className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                  onClick={Login}
-                >
-                  Login
-                </button>
+                {Email !== "" && Password !== "" && (
+                  <button
+                    className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                    onClick={Login}
+                  >
+                    Login
+                  </button>
+                )}
                 <button
                   className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
                   onClick={handleToggleModal}
@@ -201,14 +192,16 @@ const Identification = () => {
                     onChange={(e) => setConformPassword(e.target.value)}
                   />
                 </div>
-                {Password == ConfirmPassword && (
-                  <button
-                    className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                    onClick={SignUp}
-                  >
-                    Sign Up
-                  </button>
-                )}
+                {Email !== "" &&
+                  Password !== "" &&
+                  Password == ConfirmPassword && (
+                    <button
+                      className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                      onClick={SignUp}
+                    >
+                      Sign Up
+                    </button>
+                  )}
                 <button
                   className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
                   onClick={handleToggleModal}
