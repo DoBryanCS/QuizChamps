@@ -1,9 +1,15 @@
 import React, { useState, useContext } from "react";
 //import { auth } from "../firebase";
-import { getAuth, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../Firebase";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { UnContexte } from "./App";
+import { AuthContext } from "./Context/AuthContext";
 
 // Function logout with google
 /**const handleSignOut = async () => {
@@ -15,7 +21,9 @@ import { UnContexte } from "./App";
 };*/
 
 const Identification = () => {
+  const auth = getAuth();
   const [showModal, setShowModal] = useState(false);
+  const { dispatch } = useContext(AuthContext);
 
   const handleToggleModal = () => {
     setShowModal(!showModal);
@@ -32,59 +40,52 @@ const Identification = () => {
 
   //https://www.youtube.com/watch?v=PKwu15ldZ7k&ab_channel=WebDevSimplified
   //https://github.com/WebDevSimplified/React-Firebase-Auth
-  async function Login() {
-    const auth = getAuth();
+  //async function Login() {
+  const Login = (e) => {
+    e.preventDefault();
     signInWithEmailAndPassword(auth, Email, Password)
       .then((userCredential) => {
-        // Signed in
         const user = userCredential.user;
-        console.log(userCredential);
         console.log(user);
-        leContext.setUID(user.uid);
-      }).then (() => { navigate("/")})
+        dispatch({ type: "LOGIN", payload: user });
+        navigate("/"); //redirect to home page
+        //if (userCredential !== undefined) {
+        //}
+      })
       .catch((error) => {
         console.log(error);
       });
-  }
+  };
 
-  async function SignUp() {
-    const auth = getAuth();
+  //async function SignUp() {
+  const SignUp = (e) => {
+    e.preventDefault();
     createUserWithEmailAndPassword(auth, Email, Password)
       .then((userCredential) => {
-        // Signed in
+        console.log(userCredential.user);
         const user = userCredential.user;
-        console.log(user);
         leContext.setUID(user.uid);
-        //navigate("/");
-      }).then (() => { navigate("/")})
+        sessionStorage.setItem("UID", user.uid);
+        navigate("/");
+      })
       .catch((error) => {
         console.log(error);
         // ..
       });
-  }
+  };
 
   const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider();
-    //const auth = getAuth();
-    //const auth = getAuth(app);
-    provider.setCustomParameters({
-      login_hint: "user@example.com",
-    });
-    /**const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID;
-    provider.setCustomParameters({
-      prompt: "select_account",
-      client_id: clientId,
-    });*/
     signInWithPopup(auth, provider)
       .then((result) => {
-        const user = result.user;
-        console.log(user);
-        // Do something with the signed-in user
-        // Navigate to the home page
-        //sessionStorage.setItem('UID', result.uid);
-        leContext.setUID(result.uid);
-        leContext.setName(result.displayName);
-        navigate("/");
+        if (result !== undefined) {
+          const user = result.user;
+          console.log(user); // The signed-in user info.
+          leContext.setUID(result.uid);
+          sessionStorage.setItem("UID", result.uid);
+          leContext.setName(result.displayName);
+          navigate("/");
+        }
       })
       .catch((error) => {
         console.log(error);

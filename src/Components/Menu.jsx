@@ -5,6 +5,7 @@ import { auth } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {
+  
   const Context = useContext(UnContexte);
   const navigate = useNavigate();
 
@@ -14,7 +15,7 @@ const Menu = () => {
       auth.signOut();
       Context.setUID("");
       Context.setName("");
-      navigate('/Identification');
+      //navigate('/Identification');
     } catch (error) {
       console.log(error);
     }
@@ -36,7 +37,7 @@ const Menu = () => {
           </Link>
         )}
       </nav>
-      <button>
+      <div>
         <button
           className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
           onClick={() => Context.setModal(true)}
@@ -51,7 +52,7 @@ const Menu = () => {
             Logout
           </button>
         )}
-      </button>
+      </div>
       {Context.Modal && (
         <div>
           <QuizIdentification />

@@ -20,7 +20,8 @@ function App() {
 
   const [Modal, setModal] = useState(false);
   const [UID, setUID] = useState("");
-  const object = { Modal, setModal, UID, setUID };
+  const [Name, setName] = useState("");
+  const object = { Modal, setModal, UID, setUID, Name, setName };
 
   return (
     /**<div className="App">
