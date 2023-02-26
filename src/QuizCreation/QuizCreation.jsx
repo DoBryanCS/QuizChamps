@@ -8,8 +8,9 @@ import "./QuizCreation.css";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SaveIcon from "@mui/icons-material/Save";
-import { storage } from "../firebase-config";
+import { storage, auth } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { onAuthStateChanged } from "firebase/auth";
 
 function QuizCreation() {
   const [showPopup, setShowPopup] = useState(true); // initialize state for the modal popup
@@ -50,6 +51,12 @@ function QuizCreation() {
   const [selectedQuestion, setSelectedQuestion] = useState({
     question: "",
     index: 0,
+  });
+
+  const [user, setUser] = useState({});
+
+  onAuthStateChanged(auth, (currentUser) => {
+    setUser(currentUser);
   });
 
   // function to add a new question
@@ -243,9 +250,9 @@ function QuizCreation() {
       };
     });
     quiz.img = img;
-    quiz.creator = "allo";
+    quiz.creator = user?.email;
     quiz.topic = topic;
-    quiz.userID = "allo";
+    quiz.userID = user?.uid;
     return { [title]: quiz };
   }
 
@@ -315,7 +322,7 @@ function QuizCreation() {
         quizInfo.title,
         quizInfo.topic
       );
-      fetch("http://localhost:3000/", {
+      fetch("http://localhost:3000/quizs/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),
