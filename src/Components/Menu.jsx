@@ -5,7 +5,6 @@ import { auth } from "../../firebase";
 import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {
-  
   const Context = useContext(UnContexte);
   const navigate = useNavigate();
 

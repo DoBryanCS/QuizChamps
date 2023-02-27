@@ -1,5 +1,4 @@
 import React, { useState, useContext } from "react";
-//import { auth } from "../firebase";
 import {
   getAuth,
   signInWithPopup,
@@ -48,9 +47,7 @@ const Identification = () => {
         const user = userCredential.user;
         console.log(user);
         dispatch({ type: "LOGIN", payload: user });
-        navigate("/"); //redirect to home page
-        //if (userCredential !== undefined) {
-        //}
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
@@ -74,22 +71,20 @@ const Identification = () => {
       });
   };
 
-  const signInWithGoogle = () => {
+  const signInWithGoogle = (e) => {
+    e.preventDefault();
     const provider = new GoogleAuthProvider();
     signInWithPopup(auth, provider)
       .then((result) => {
-        if (result !== undefined) {
-          const user = result.user;
-          console.log(user); // The signed-in user info.
-          leContext.setUID(result.uid);
-          sessionStorage.setItem("UID", result.uid);
-          leContext.setName(result.displayName);
-          navigate("/");
-        }
+        const user = result.user;
+        console.log(user);
+        leContext.setUID(result.uid);
+        sessionStorage.setItem("UID", result.uid);
+        leContext.setName(result.displayName);
+        navigate("/");
       })
       .catch((error) => {
         console.log(error);
-        // Handle Errors here.
       });
   };
 
