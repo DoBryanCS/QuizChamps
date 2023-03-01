@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import {
   getAuth,
+  updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
@@ -28,7 +29,7 @@ const Identification = () => {
     setShowModal(!showModal);
   };
 
-  //const [user, setUser] = useState(null);
+  const [Username, setUsername] = useState("");
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
@@ -47,7 +48,8 @@ const Identification = () => {
         const user = userCredential.user;
         console.log(user);
         leContext.setUID(user.uid);
-       // dispatch({ type: "LOGIN", payload: user });
+        leContext.setName(user.displayName);
+        // dispatch({ type: "LOGIN", payload: user });
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -60,9 +62,13 @@ const Identification = () => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, Email, Password)
       .then((userCredential) => {
+        updateProfile(auth.currentUser, {
+          displayName: Username,
+        });
         console.log(userCredential.user);
         const user = userCredential.user;
         leContext.setUID(user.uid);
+        leContext.setName(Username);
         sessionStorage.setItem("UID", user.uid);
         navigate("/Dashboard");
       })
@@ -152,7 +158,18 @@ const Identification = () => {
             <div className="bg-white p-6 rounded-lg">
               <form className="pb-2">
                 <h2 className="text-lg font-medium mb-4">Sign Up</h2>
-
+                <div className="mb-4">
+                  <label className="block text-gray-700 font-medium mb-2">
+                    Username
+                  </label>
+                  <input
+                    className="border border-gray-400 p-2 rounded-lg w-full"
+                    type="text"
+                    value={Username}
+                    required
+                    onChange={(e) => setUsername(e.target.value)}
+                  />
+                </div>
                 <div className="mb-4">
                   <label className="block text-gray-700 font-medium mb-2">
                     Email

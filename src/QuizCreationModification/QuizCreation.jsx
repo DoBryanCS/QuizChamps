@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
 import QuizCreationModal from "./QuizCreationModal";
@@ -8,14 +8,16 @@ import "./QuizCreation.css";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SaveIcon from "@mui/icons-material/Save";
-import { storage, auth } from "../firebase-config";
+import { storage /**, auth*/ } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { onAuthStateChanged } from "firebase/auth";
+import { UnContexte } from "../App";
+//import { onAuthStateChanged } from "firebase/auth";
 
 function QuizCreation() {
   const [showPopup, setShowPopup] = useState(true); // initialize state for the modal popup
   const [missingInfoModalOpen, setMissingInfoModalOpen] = useState(false);
   const [missingQuestions, setMissingQuestions] = useState([]);
+  const leContext = useContext(UnContexte);
 
   // create a reference to the file input element
   const fileInputRef = useRef(null);
@@ -53,11 +55,11 @@ function QuizCreation() {
     index: 0,
   });
 
-  const [user, setUser] = useState({});
+  //const [user, setUser] = useState({});
 
-  onAuthStateChanged(auth, (currentUser) => {
+  /**onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
-  });
+  });*/
 
   // function to add a new question
   const addQuestion = (event) => {
@@ -250,9 +252,9 @@ function QuizCreation() {
       };
     });
     quiz.img = img;
-    quiz.creator = user?.email;
+    quiz.creator = leContext.Name;
     quiz.topic = topic;
-    quiz.userID = user?.uid;
+    quiz.userID = leContext.UID;
     return { [title]: quiz };
   }
 
