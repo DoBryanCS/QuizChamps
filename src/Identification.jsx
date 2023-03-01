@@ -31,7 +31,7 @@ const Identification = () => {
   //const [user, setUser] = useState(null);
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
-  const [ConfirmPassword, setConformPassword] = useState("");
+  const [ConfirmPassword, setConfirmPassword] = useState("");
 
   //navigation + keeping info in session storage
   const navigate = useNavigate();
@@ -185,7 +185,7 @@ const Identification = () => {
                     type="password"
                     value={ConfirmPassword}
                     required
-                    onChange={(e) => setConformPassword(e.target.value)}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
                 {Email !== "" &&

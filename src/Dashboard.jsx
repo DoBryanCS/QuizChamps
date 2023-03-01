@@ -48,15 +48,6 @@ function Dashboard() {
 
     return (
         <div className="relative min-h-screen">
-            <nav className="flex items-center justify-between flex-wrap bg-indigo-900 p-6">
-                <div className="flex items-center flex-shrink-0 text-white mr-6">
-                    <span className="font-semibold text-xl tracking-tight">QuizChamp</span>
-                </div>
-                
-                    <div>
-                        <button className="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-white hover:bg-red-600 mt-4 lg:mt-0">Logout</button>
-                    </div>
-            </nav>
             <div className="p-6">
                 <div className="grid grid-cols-2 gap-4">
 

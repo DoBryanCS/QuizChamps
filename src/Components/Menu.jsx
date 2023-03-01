@@ -9,19 +9,20 @@ const Menu = () => {
   const navigate = useNavigate();
 
   // Function logout with google
-  const handleSignOut = () => {
+  const handleSignOut = (e) => {
+    e.preventDefault();
     try {
       auth.signOut();
       Context.setUID("");
       Context.setName("");
-      //navigate('/Identification');
+      navigate('/Identification');
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center bg-gray-900 p-4  rounded-lg">
+    <div className="flex flex-col sm:flex-row justify-between items-center bg-gray-900 p-4 rounded-lg">
       <div className="text-white text-2xl font-medium">Menu</div>
       <nav className="flex">
         <Link to="/" className="text-gray-500 hover:text-white mx-4">
