@@ -7,7 +7,9 @@ import Identification from "./Identification";
 import Dashboard from "./Dashboard";
 import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
-import Home from "./Home.jsx";        
+import Home from "./Home.jsx";     
+//import QuizCreation from "./QuizCreationModification/QuizCreation";
+//import QuizModification from "./QuizCreationModification/QuizModification";   
 
 export const UnContexte = React.createContext();
 
@@ -35,6 +37,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Dashboard" element={<Dashboard />} />
+              <Route path="/quizCreation" element={<Home />} />
+              <Route path="/quizModification/:id" element={<Home />} />
               <Route path="/Identification" element={<Identification />} />
               <Route path="*" element={<NoMatch />} />
             </Routes>
