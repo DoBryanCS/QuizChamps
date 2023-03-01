@@ -11,6 +11,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { storage /**, auth*/ } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { UnContexte } from "../App";
+import { useNavigate } from "react-router-dom";
 //import { onAuthStateChanged } from "firebase/auth";
 
 function QuizCreation() {
@@ -18,6 +19,7 @@ function QuizCreation() {
   const [missingInfoModalOpen, setMissingInfoModalOpen] = useState(false);
   const [missingQuestions, setMissingQuestions] = useState([]);
   const leContext = useContext(UnContexte);
+  const navigate = useNavigate();
 
   // create a reference to the file input element
   const fileInputRef = useRef(null);
@@ -251,11 +253,15 @@ function QuizCreation() {
         imgURL: question.img,
       };
     });
-    quiz.img = img;
-    quiz.creator = leContext.Name;
-    quiz.topic = topic;
-    quiz.userID = leContext.UID;
-    return { [title]: quiz };
+
+    return {
+      [title]: quiz,
+      creator: leContext.Name,
+      img: img,
+      quizTitle: title,
+      topic: topic,
+      userID: leContext.UID,
+    };
   }
 
   function validateQuestions() {
@@ -311,6 +317,10 @@ function QuizCreation() {
     }
   }
 
+  const handlesaveQuestions = () => {
+    navigate("/Dashboard");
+  };
+
   // This function formats and sends the quiz data to a server for saving.
   const saveQuestions = () => {
     const validationErrors = validateQuestions();
@@ -330,7 +340,10 @@ function QuizCreation() {
         body: JSON.stringify(formattedData),
       })
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          console.log(data);
+          handlesaveQuestions();
+        })
         .catch((error) => console.error(error));
     }
   };
