@@ -3,7 +3,7 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import socket from "../socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import QuizCreation from "./QuizCreation/QuizCreation";
+import QuizCreation from "./QuizCreationModification/QuizCreation";
 
 function App() {
   socket.on("connect", () => {
