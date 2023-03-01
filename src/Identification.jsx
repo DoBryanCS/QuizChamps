@@ -46,8 +46,9 @@ const Identification = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        dispatch({ type: "LOGIN", payload: user });
-        navigate("/");
+        leContext.setUID(user.uid);
+       // dispatch({ type: "LOGIN", payload: user });
+        navigate("/Dashboard");
       })
       .catch((error) => {
         console.log(error);
@@ -63,7 +64,7 @@ const Identification = () => {
         const user = userCredential.user;
         leContext.setUID(user.uid);
         sessionStorage.setItem("UID", user.uid);
-        navigate("/");
+        navigate("/Dashboard");
       })
       .catch((error) => {
         console.log(error);
@@ -78,10 +79,10 @@ const Identification = () => {
       .then((result) => {
         const user = result.user;
         console.log(user);
-        leContext.setUID(result.uid);
-        sessionStorage.setItem("UID", result.uid);
-        leContext.setName(result.displayName);
-        navigate("/");
+        leContext.setUID(user.uid);
+        sessionStorage.setItem("UID", user.uid);
+        leContext.setName(user.displayName);
+        navigate("/Dashboard");
       })
       .catch((error) => {
         console.log(error);

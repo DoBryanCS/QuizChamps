@@ -7,6 +7,7 @@ import Identification from "./Identification";
 import Dashboard from "./Dashboard";
 import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
+import Home from "./Home.jsx";        
 
 export const UnContexte = React.createContext();
 
@@ -25,32 +26,32 @@ function App() {
   const object = { Modal, setModal, UID, setUID, Name, setName };
 
   return (
-    /**<div className="App">
-      <a
-        href="#"
-        class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700"
-      >
-        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          Noteworthy technology acquisitions 2021
-        </h5>
-        <p class="font-normal text-gray-700 dark:text-gray-400">
-          Here are the biggest enterprise technology acquisitions of 2021 so
-          far, in reverse chronological order.
-        </p>
-      </a>
-    </div>*/
     <div className="bg-indigo-900">
-      <BrowserRouter>
-        <UnContexte.Provider value={object}>
-          <Menu />
-          <Routes>
-            <Route path="/" element={<NoMatch />} />
-            <Route path="/Identification" element={<Identification />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
-        </UnContexte.Provider>
-      </BrowserRouter>
+      <UnContexte.Provider value={object}>
+        {
+          object.UID !== '' &&
+          <BrowserRouter>
+            <Menu />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Dashboard" element={<Dashboard />} />
+              <Route path="/Identification" element={<Identification />} />
+              <Route path="*" element={<NoMatch />} />
+            </Routes>
+          </BrowserRouter>
+        }
+         {
+          object.UID === '' &&
+          <BrowserRouter>
+            <Menu />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Identification" element={<Identification />} />
+              <Route path="*" element={<NoMatch />} />
+            </Routes>
+          </BrowserRouter>
+        }
+      </UnContexte.Provider>
     </div>
   );
 }

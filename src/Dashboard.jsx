@@ -1,16 +1,22 @@
 import React from 'react';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FaPlay, FaEdit } from "react-icons/fa";
+import {
+    getAuth
+  } from "firebase/auth";
+import { UnContexte } from "./App";
 
 
 
 function Dashboard() {
+    
     const [quizes, setQuizes] = useState(null);
     const serveur = 'http://localhost:3000/quizs/'
     var quizlist = [];
+    const leContext = useContext(UnContexte);
 
     useEffect(() => {
-
+        const auth = getAuth();
         async function getQuiz(id) {
             let rep = await fetch(`${serveur}/${id}`);
             if (rep.ok) {
@@ -24,7 +30,8 @@ function Dashboard() {
         }
 
         async function getQuizs() {
-            let rep = await fetch(`${serveur}`);
+            console.log(leContext.UID);
+            let rep = await fetch(`${serveur}user/${leContext.UID}`);
             if (rep.ok) {
                 let data = await rep.json();
                 const quizPromises = Object.keys(data).map((id) => getQuiz(id));
@@ -49,6 +56,7 @@ function Dashboard() {
     return (
         <div className="relative min-h-screen">
             <div className="p-6">
+                <p className="text-2xl font-bold py-9 text-white"> {leContext.Name} - Dashboard</p>
                 <div className="grid grid-cols-2 gap-4">
 
                     <div className="bg-white rounded-lg shadow-md p-8">
