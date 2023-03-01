@@ -7,9 +7,9 @@ import Identification from "./Identification";
 import Dashboard from "./Dashboard";
 import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
-import Home from "./Home.jsx";     
-//import QuizCreation from "./QuizCreationModification/QuizCreation";
-//import QuizModification from "./QuizCreationModification/QuizModification";   
+import Home from "./Home.jsx";
+import QuizCreation from "./QuizCreationModification/QuizCreation";
+import QuizModification from "./QuizCreationModification/QuizModification";
 
 export const UnContexte = React.createContext();
 
@@ -28,24 +28,25 @@ function App() {
   const object = { Modal, setModal, UID, setUID, Name, setName };
 
   return (
-    <div className="bg-indigo-900">
+    <div className="bg-indigo-900 min-h-screen">
       <UnContexte.Provider value={object}>
-        {
-          object.UID !== '' &&
+        {object.UID !== "" && (
           <BrowserRouter>
             <Menu />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Dashboard" element={<Dashboard />} />
-              <Route path="/quizCreation" element={<Home />} />
-              <Route path="/quizModification/:id" element={<Home />} />
+              <Route path="/quizCreation" element={<QuizCreation />} />
+              <Route
+                path="/quizModification/:id"
+                element={<QuizModification />}
+              />
               <Route path="/Identification" element={<Identification />} />
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </BrowserRouter>
-        }
-         {
-          object.UID === '' &&
+        )}
+        {object.UID === "" && (
           <BrowserRouter>
             <Menu />
             <Routes>
@@ -54,7 +55,7 @@ function App() {
               <Route path="*" element={<NoMatch />} />
             </Routes>
           </BrowserRouter>
-        }
+        )}
       </UnContexte.Provider>
     </div>
   );

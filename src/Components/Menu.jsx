@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { QuizIdentification } from "./QuizIdentification";
 import { UnContexte } from "../App";
-import { auth } from "../../firebase";
+import { getAuth } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 
 const Menu = () => {
@@ -11,6 +11,7 @@ const Menu = () => {
   // Function logout with google
   const handleSignOut = (e) => {
     e.preventDefault();
+    const auth = getAuth();
     try {
       auth.signOut();
       Context.setUID("");
