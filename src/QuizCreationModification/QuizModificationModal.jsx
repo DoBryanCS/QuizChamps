@@ -316,6 +316,7 @@ function QuizModificationModal({ show, setShow, quizInfo, setQuizInfo }) {
               disabled={!isQuizFormValid || (perc !== null && perc < 100)} // disable if form is not valid or progress is not complete
               className="modalButton2 text-white p-3 font-bold"
               onClick={saveSummary}
+              style={{ marginRight: "10px" }}
             >
               Save
             </button>
