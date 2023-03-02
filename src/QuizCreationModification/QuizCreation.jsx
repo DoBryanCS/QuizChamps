@@ -267,6 +267,15 @@ function QuizCreation() {
   function validateQuestions() {
     let missingQuestions = [];
 
+    // Check if there are no questions
+    if (questions.length === 0) {
+      missingQuestions.push({
+        number: 1,
+        info: ["Please add at least one question"],
+      });
+      return missingQuestions;
+    }
+
     // Check each question for missing information
     for (let i = 0; i < questions.length; i++) {
       let question = questions[i];
