@@ -472,14 +472,10 @@ function QuizCreation() {
               />
               <div className="answers">
                 <textarea
-                  style={{
-                    backgroundColor: "#3779FF",
-                    border: "2px solid #3779FF",
-                  }}
                   maxLength="200"
                   type="text"
                   placeholder="Add answer 1"
-                  className="textarea my-4 p-3 m-2 text-white"
+                  className="textarea my-4 p-3 m-2 text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500"
                   onChange={(e) =>
                     handleAnswerChange(e, selectedQuestion.index, 0)
                   }
@@ -498,14 +494,10 @@ function QuizCreation() {
                   }
                 />
                 <textarea
-                  style={{
-                    backgroundColor: "#F75555",
-                    border: "2px solid #F75555",
-                  }}
                   maxLength="200"
                   type="text"
                   placeholder="Add answer 2"
-                  className="textarea my-4 p-3 m-2 text-center text-white"
+                  className="textarea my-4 p-3 m-2 text-center text-white bg-gradient-to-r from-cyan-500 via-emerald-500 to-green-500"
                   onChange={(e) =>
                     handleAnswerChange(e, selectedQuestion.index, 1)
                   }
@@ -527,14 +519,10 @@ function QuizCreation() {
               {questions[selectedQuestion.index].answers.length > 2 ? (
                 <div className="answers">
                   <textarea
-                    style={{
-                      backgroundColor: "#FF981F",
-                      border: "2px solid #FF981F",
-                    }}
                     maxLength="200"
                     type="text"
                     placeholder="Add answer 3"
-                    className="textarea my-4 p-3 m-2 text-center text-white"
+                    className="textarea my-4 p-3 m-2 text-center text-white bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500"
                     onChange={(e) =>
                       handleAnswerChange(e, selectedQuestion.index, 2)
                     }
@@ -553,14 +541,10 @@ function QuizCreation() {
                     }
                   />
                   <textarea
-                    style={{
-                      backgroundColor: "#12D18E",
-                      border: "2px solid #12D18E",
-                    }}
                     maxLength="200"
                     type="text"
                     placeholder="Add answer 4"
-                    className="textarea my-4 p-3 m-2 text-center text-white"
+                    className="textarea my-4 p-3 m-2 text-center text-white bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500"
                     onChange={(e) =>
                       handleAnswerChange(e, selectedQuestion.index, 3)
                     }
