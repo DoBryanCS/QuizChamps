@@ -49,8 +49,8 @@ function Dashboard() {
     navigate("/quizCreation");
     };
 
-    const handleUpdateQuiz = () => {
-    navigate(`/quizModification/${q["id"]}`);
+    const handleUpdateQuiz = (id) => {
+    navigate(`/quizModification/${id}`);
     };
 
   return (
@@ -79,7 +79,7 @@ function Dashboard() {
                       </button>
                       <button
                         className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
-                        onClick={handleUpdateQuiz}
+                        onClick={() => handleUpdateQuiz(q["id"])}
                       >
                         <FaEdit />
                       </button>

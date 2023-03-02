@@ -27,25 +27,17 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
 
   // Use useEffect to check whether the quiz form is valid and whether the cancel button is valid
   useEffect(() => {
-    if (
-      quizInfo.title !== "" &&
-      quizInfo.topic !== "" &&
-      quizInfo.showText == false
-    ) {
+    if (quizInfo.title !== "" && quizInfo.topic !== "") {
       setIsCancelValid(true);
     } else {
       setIsCancelValid(false);
     }
-    if (
-      quizInfoTemp.title !== "" &&
-      quizInfoTemp.topic !== "" &&
-      quizInfoTemp.showText == false
-    ) {
+    if (quizInfoTemp.title !== "" && quizInfoTemp.topic !== "") {
       setIsQuizFormValid(true);
     } else {
       setIsQuizFormValid(false);
     }
-  }, [quizInfo, quizInfoTemp.title, quizInfoTemp.topic, quizInfoTemp.showText]);
+  }, [quizInfo, quizInfoTemp.title, quizInfoTemp.topic]);
 
   // Handle changes to the quiz title
   const handleTitleChange = (e) => {

@@ -68,7 +68,7 @@ const QuizIdentification = () => {
   
 
   return (
-    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-blur-sm">
+    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-blur-sm z-10">
       <div className="bg-white p-6 rounded-lg">
         <form className="pb-2">
           <div className="mb-4">
