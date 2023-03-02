@@ -1,24 +1,27 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import Sidebar from "./Sidebar";
 import Checkbox from "@mui/material/Checkbox";
-import QuizCreationModal from "./QuizCreationModal";
+import QuizModificationModal from "./QuizModificationModal";
 import MissingInfoModal from "./MissingInfoModal";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import "./QuizCreation.css";
 import SettingsIcon from "@mui/icons-material/Settings";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import SaveIcon from "@mui/icons-material/Save";
-import { storage, auth } from "../firebase-config";
+import { storage } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import { onAuthStateChanged } from "firebase/auth";
+import { useParams } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { UnContexte } from "../App";
 
 function QuizModification() {
   const serveur = "http://localhost:3000/quizs/";
   const [showPopup, setShowPopup] = useState(true); // initialize state for the modal popup
   const [missingInfoModalOpen, setMissingInfoModalOpen] = useState(false);
   const [missingQuestions, setMissingQuestions] = useState([]);
+  const leContext = useContext(UnContexte);
+  const navigate = useNavigate();
 
-  const [quizData, setQuizData] = useState({});
   const { id } = useParams();
 
   // create a reference to the file input element
@@ -29,7 +32,6 @@ function QuizModification() {
     title: "",
     topic: "",
     img: "",
-    image: "",
     imageSrc: "",
     showText: "true",
   });
@@ -39,7 +41,6 @@ function QuizModification() {
     {
       question: "",
       img: "",
-      image: "",
       imageSrc: null,
       showText: true,
       answers: [
@@ -57,17 +58,10 @@ function QuizModification() {
     index: 0,
   });
 
-  const [user, setUser] = useState({});
-
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
-
   async function getQuiz(id) {
     let rep = await fetch(`${serveur}/${id}`);
     if (rep.ok) {
       let data = await rep.json();
-      const quizName = Object.keys(data)[0];
       return data;
     } else {
       console.log("Erreur getQuiz");
@@ -77,9 +71,27 @@ function QuizModification() {
   useEffect(() => {
     async function getData() {
       const quizData = await getQuiz(id);
-      setQuizData(quizData);
+      setQuizInfo({
+        title: quizData.quizTitle,
+        topic: quizData.topic,
+        img: quizData.img,
+        imageSrc: quizData.img,
+        showText: !quizData.img,
+      });
+      setQuestions(
+        Object.values(quizData["Questions"]).map((q) => ({
+          question: q.Question,
+          img: q.imgURL,
+          imageSrc: q.imgURL,
+          showText: !q.imgURL,
+          answers: Object.entries(q.Answers).map(([text, isCorrect]) => ({
+            text,
+            isCorrect,
+            disabled: !isCorrect,
+          })),
+        }))
+      );
     }
-
     getData().then(() => console.log("done getData"));
   }, [id]);
 
@@ -90,7 +102,6 @@ function QuizModification() {
       questions.concat({
         question: "",
         img: "",
-        image: "",
         imageSrc: null,
         showText: true,
         answers: [
@@ -165,7 +176,6 @@ function QuizModification() {
       // update the image source and hide the text if an image is selected
       newQuestions[selectedQuestion.index].imageSrc = objectUrl;
       newQuestions[selectedQuestion.index].showText = false;
-      newQuestions[selectedQuestion.index].image = imageFile;
 
       // Upload the image to Firebase Storage
       const storageRef = ref(storage, imageFile.name);
@@ -210,7 +220,6 @@ function QuizModification() {
       const newQuestions = [...questions];
       // reset the image properties and show the text
       newQuestions[selectedQuestion.index].img = "";
-      newQuestions[selectedQuestion.index].image = "";
       newQuestions[selectedQuestion.index].imageSrc = null;
       newQuestions[selectedQuestion.index].showText = true;
       setQuestions(newQuestions);
@@ -273,11 +282,15 @@ function QuizModification() {
         imgURL: question.img,
       };
     });
-    quiz.img = img;
-    quiz.creator = user?.email;
-    quiz.topic = topic;
-    quiz.userID = user?.uid;
-    return { [title]: quiz };
+
+    return {
+      Questions: quiz,
+      creator: leContext.Name,
+      img: img,
+      quizTitle: title,
+      topic: topic,
+      userID: leContext.UID,
+    };
   }
 
   function validateQuestions() {
@@ -333,6 +346,10 @@ function QuizModification() {
     }
   }
 
+  const handlesaveQuestions = () => {
+    navigate("/Dashboard");
+  };
+
   // This function formats and sends the quiz data to a server for saving.
   const saveQuestions = () => {
     const validationErrors = validateQuestions();
@@ -346,13 +363,16 @@ function QuizModification() {
         quizInfo.title,
         quizInfo.topic
       );
-      fetch("http://localhost:3000/quizs/", {
-        method: "POST",
+      fetch(`${serveur}/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formattedData),
       })
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          console.log(data);
+          handlesaveQuestions();
+        })
         .catch((error) => console.error(error));
     }
   };
@@ -360,12 +380,12 @@ function QuizModification() {
   return (
     <div>
       <div>
-        <QuizCreationModal
+        <QuizModificationModal
           quizInfo={quizInfo}
           setQuizInfo={setQuizInfo}
           show={showPopup}
           setShow={setShowPopup}
-        ></QuizCreationModal>
+        ></QuizModificationModal>
       </div>
       <div>
         <MissingInfoModal
@@ -437,7 +457,7 @@ function QuizModification() {
                   backgroundColor: "#f0eded",
                   boxShadow: "2px 2px 2px #888888",
                 }}
-                value={selectedQuestion.question}
+                value={questions[selectedQuestion.index].question}
                 onChange={(e) =>
                   handleQuestionChange(e, selectedQuestion.index)
                 }

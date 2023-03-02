@@ -255,7 +255,7 @@ function QuizCreation() {
     });
 
     return {
-      [title]: quiz,
+      Questions: quiz,
       creator: leContext.Name,
       img: img,
       quizTitle: title,
