@@ -29,7 +29,7 @@ const Menu = () => {
         className="text-white text-2xl font-medium cursor-pointer"
         onClick={() => navigate("/")}
       >
-        Home
+        QuizChamp
       </div>
 
       <div>
