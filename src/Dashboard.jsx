@@ -18,7 +18,7 @@ function Dashboard() {
       let rep = await fetch(`${serveur}/${id}`);
       if (rep.ok) {
         let data = await rep.json();
-        const quizName = Object.keys(data)[0];
+        //const quizName = Object.keys(data)[0];
         return data;
       } else {
         console.log("Erreur getQuiz");
@@ -26,14 +26,13 @@ function Dashboard() {
     }
 
     async function getQuizs() {
-      console.log(leContext.UID);
+      //console.log(leContext.UID);
       let rep = await fetch(`${serveur}user/${leContext.UID}`);
       if (rep.ok) {
         let data = await rep.json();
-        const quizPromises = Object.keys(data).map((id) => getQuiz(id));
-        const quizList = await Promise.all(quizPromises);
-
-        setQuizes(quizList);
+        //const quizPromises = Object.keys(data).map((id) => getQuiz(id));
+        //const quizList = await Promise.all(quizPromises);
+        setQuizes(data);
       } else {
         console.log("Erreur getQuizs");
       }
@@ -73,7 +72,7 @@ function Dashboard() {
                       className="grid grid-cols-6 gap-1 w-200 h-24 bg-slate-100 rounded row-auto shadow-md flex items-center"
                     >
                       <p className="col-span-4 align-middle rounded">
-                        {q["topic"]}
+                        {q["quizTitle"]}
                       </p>
                       <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6">
                         <FaPlay />
