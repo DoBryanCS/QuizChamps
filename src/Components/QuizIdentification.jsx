@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 
 const QuizIdentification = () => {
   const Context = useContext(UnContexte);
-  const [QuizID, setQuizID] = useState("34778655");
-  const [Name, setName] = useState("Eusebe");
+  const [QuizID, setQuizID] = useState("");
+  const [Name, setName] = useState(Context.Name);
   const [Error, setError] = useState("");
   const navigate = useNavigate();
   const serveur = `http://localhost:3000/quizs/${QuizID}`;
@@ -20,8 +20,8 @@ const QuizIdentification = () => {
     try {
       const response = await fetch(`${serveur}`);
       console.log(response);
-      if (response.ok) {
-        console.log(await response.json());
+        const data = await response.json();
+      if (response.ok && data !== null) {
         console.log("quiz exists");
         return true;
       } else {
@@ -36,21 +36,21 @@ const QuizIdentification = () => {
 
   const joinQuiz = async (e) => {
     e.preventDefault();
-    const quizId = QuizID;
-    const username = Name;
-    const quizExists = await checkQuizExists(quizId);
+    const quizExists = await checkQuizExists(QuizID);
     if (!quizExists) {
       // Display an error message to the user
       setError("Quiz does not exist");
       return;
+    } else {
+      setError("");
     }
-    try {
+    /**try {
       const response = await fetch("http://localhost:3000/join-quiz", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ quizId, username }),
+        body: JSON.stringify({ QuizID, Name }),
       });
       //navigate(`/Dashboard`);
       const data = await response.json();
@@ -63,7 +63,7 @@ const QuizIdentification = () => {
     } catch (error) {
       console.error(error);
       setError("An error occurred");
-    }
+    }*/
   };
   
 

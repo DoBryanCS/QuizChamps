@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   getAuth,
   updateProfile,
@@ -9,15 +9,6 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { UnContexte } from "./App";
-
-// Function logout with google
-/**const handleSignOut = async () => {
-  try {
-    auth.signOut()
-  } catch (error) {
-    console.log(error);
-  }
-};*/
 
 const Identification = () => {
   const auth = getAuth();
@@ -31,6 +22,9 @@ const Identification = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
+  const [Error, setError] = useState("test erreur");
+
+  useEffect(() => { setError("")}, [Username, Email, Password, ConfirmPassword, showModal]);
 
   //navigation + keeping info in session storage
   const navigate = useNavigate();
@@ -51,6 +45,7 @@ const Identification = () => {
         navigate("/Dashboard");
       })
       .catch((error) => {
+        setError(error.message);
         console.log(error);
       });
   };
@@ -72,6 +67,7 @@ const Identification = () => {
         navigate("/Dashboard");
       })
       .catch((error) => {
+        setError(error.message);
         console.log(error);
         // ..
       });
@@ -125,6 +121,7 @@ const Identification = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            {Error && <div className="text-red-500">"{Error}"</div>}
             <button
               className="font-bold bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 rounded-full ml-2"
               onClick={handleToggleModal}
@@ -206,20 +203,24 @@ const Identification = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
+            {Error && <div className="text-red-500">"{Error}"</div>}
             <button
               className="font-bold bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 rounded-full ml-2"
               onClick={handleToggleModal}
             >
               Login
             </button>
-            {Email !== "" && Password !== "" && Password == ConfirmPassword && (
-              <button
-                className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                onClick={SignUp}
-              >
-                Sign Up
-              </button>
-            )}
+            {Username !== "" &&
+              Email !== "" &&
+              Password !== "" &&
+              Password == ConfirmPassword && (
+                <button
+                  className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                  onClick={SignUp}
+                >
+                  Sign Up
+                </button>
+              )}
 
             <button
               className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"
