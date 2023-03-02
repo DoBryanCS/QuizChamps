@@ -56,7 +56,9 @@ function Sidebar({
               border: selectedQuestion === index ? "2px solid #6949ff" : "",
               borderRadius: selectedQuestion === index ? "10px" : "",
 
-              backgroundColor: !questions[index].imageSrc ? "#f0eded" : "",
+              backgroundColor: !questions[index].imageSrc
+                ? "#f0eded"
+                : "#f0eded",
               position: "relative",
             }}
             className="text-sm"

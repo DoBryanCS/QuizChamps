@@ -100,7 +100,7 @@ const Identification = () => {
       <div className="bg-white p-6 rounded-lg">
         {showModal && (
           <form className="pb-2">
-            <h2 className="text-lg font-medium mb-4">Login</h2>
+            <h2 className="font-bold text-xl mb-4">Login</h2>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium mb-2">
                 Email
@@ -125,6 +125,12 @@ const Identification = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <button
+              className="font-bold bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 rounded-full ml-2"
+              onClick={handleToggleModal}
+            >
+              Sign up
+            </button>
             {Email !== "" && Password !== "" && (
               <button
                 className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
@@ -133,12 +139,6 @@ const Identification = () => {
                 Login
               </button>
             )}
-            <button
-              className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
-              onClick={handleToggleModal}
-            >
-              Sign up
-            </button>
 
             <button
               className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"
@@ -148,7 +148,7 @@ const Identification = () => {
             </button>
             <button
               className="bg-red-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full top-0 left-0 "
-              onClick={() => Context.setIdentifyModal(false)}
+              onClick={() => leContext.setIdentifyModal(false)}
             >
               Close
             </button>
@@ -157,7 +157,7 @@ const Identification = () => {
 
         {!showModal && (
           <form className="pb-2">
-            <h2 className="text-lg font-medium mb-4">Sign Up</h2>
+            <h2 className="font-bold text-xl mb-4">Sign Up</h2>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium mb-2">
                 Username
@@ -206,6 +206,12 @@ const Identification = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
+            <button
+              className="font-bold bg-white hover:bg-gray-100 text-gray-800 py-2 px-4 rounded-full ml-2"
+              onClick={handleToggleModal}
+            >
+              Login
+            </button>
             {Email !== "" && Password !== "" && Password == ConfirmPassword && (
               <button
                 className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
@@ -214,12 +220,6 @@ const Identification = () => {
                 Sign Up
               </button>
             )}
-            <button
-              className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
-              onClick={handleToggleModal}
-            >
-              Login
-            </button>
 
             <button
               className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"

@@ -467,8 +467,9 @@ function QuizModification() {
               <div
                 style={{
                   backgroundColor: questions[selectedQuestion.index].imageSrc
-                    ? "transparent"
+                    ? "#f0eded"
                     : "#f0eded",
+                  border: "2px solid #6949FF",
                 }}
                 className="insertImage border rounded m-2 text-center"
                 onClick={() => fileInputRef.current.click()}

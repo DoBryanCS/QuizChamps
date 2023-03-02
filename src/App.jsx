@@ -59,10 +59,21 @@ function App() {
                   </div>
                 }
               />
-              <Route path="/quizCreation" element={<QuizCreation />} />
+              <Route
+                path="/quizCreation"
+                element={
+                  <div className="bg-indigo-900">
+                    <QuizCreation />
+                  </div>
+                }
+              />
               <Route
                 path="/quizModification/:id"
-                element={<QuizModification />}
+                element={
+                  <div className="bg-indigo-900">
+                    <QuizModification />
+                  </div>
+                }
               />
               <Route
                 path="*"

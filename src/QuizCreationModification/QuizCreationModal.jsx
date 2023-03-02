@@ -3,10 +3,12 @@ import "./QuizCreationModal.css";
 import InsertPhotoIcon from "@mui/icons-material/InsertPhoto";
 import { storage } from "../firebase-config";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
   // Use useRef to reference the input element for selecting an image file
   const fileInputRef = useRef(null);
+  const navigate = useNavigate();
 
   // Define state to keep track of whether the quiz form is valid and whether the cancel button is valid
   const [isQuizFormValid, setIsQuizFormValid] = useState(false);
@@ -161,7 +163,7 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
         >
           {/* The title of the modal */}
           <div
-            className="text-2xl font-bold bg-gray-200 mb-4"
+            className="text-2xl text-white font-bold bg-gray-900 mb-4"
             style={{
               display: "flex",
               justifyContent: "center",
@@ -235,7 +237,7 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
               <div
                 style={{
                   backgroundColor: quizInfoTemp.imageSrc
-                    ? "transparent"
+                    ? "#f0eded"
                     : "#f0eded",
                 }}
                 className="insertImage2 border rounded m-2 text-center"
@@ -270,7 +272,7 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
             </div>
           </form>
           <div
-            className="bg-gray-200"
+            className="bg-gray-900"
             style={{
               display: "flex",
               justifyContent: "center",
@@ -289,8 +291,15 @@ function QuizCreationModal({ show, setShow, quizInfo, setQuizInfo }) {
               disabled={!isQuizFormValid || (perc !== null && perc < 100)} // disable if form is not valid or progress is not complete
               className="modalButton2 text-white p-3 font-bold"
               onClick={saveSummary}
+              style={{ marginRight: "10px" }}
             >
               Save
+            </button>
+            <button
+              className="modalButton3 text-white p-3 font-bold"
+              onClick={() => navigate("/Dashboard")}
+            >
+              Return to Dashboard
             </button>
           </div>
         </div>
