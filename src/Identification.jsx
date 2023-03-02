@@ -9,7 +9,6 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { UnContexte } from "./App";
-import { AuthContext } from "./Context/AuthContext";
 
 // Function logout with google
 /**const handleSignOut = async () => {
@@ -23,7 +22,6 @@ import { AuthContext } from "./Context/AuthContext";
 const Identification = () => {
   const auth = getAuth();
   const [showModal, setShowModal] = useState(false);
-  const { dispatch } = useContext(AuthContext);
 
   const handleToggleModal = () => {
     setShowModal(!showModal);
@@ -49,7 +47,7 @@ const Identification = () => {
         console.log(user);
         leContext.setUID(user.uid);
         leContext.setName(user.displayName);
-        // dispatch({ type: "LOGIN", payload: user });
+        leContext.setIdentifyModal(false);
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -70,6 +68,7 @@ const Identification = () => {
         leContext.setUID(user.uid);
         leContext.setName(Username);
         sessionStorage.setItem("UID", user.uid);
+        leContext.setIdentifyModal(false);
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -88,6 +87,7 @@ const Identification = () => {
         leContext.setUID(user.uid);
         sessionStorage.setItem("UID", user.uid);
         leContext.setName(user.displayName);
+        leContext.setIdentifyModal(false);
         navigate("/Dashboard");
       })
       .catch((error) => {
@@ -96,145 +96,148 @@ const Identification = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen">
-      <div>
+    <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-blur-sm z-10">
+      <div className="bg-white p-6 rounded-lg">
         {showModal && (
-          <div className="align-center h-64 w-64 flex items-center justify-center static">
-            <div className="bg-white p-6 rounded-lg">
-              <form className="pb-2">
-                <h2 className="text-lg font-medium mb-4">Login</h2>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="email"
-                    value={Email}
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Password
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="password"
-                    value={Password}
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                {Email !== "" && Password !== "" && (
-                  <button
-                    className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                    onClick={Login}
-                  >
-                    Login
-                  </button>
-                )}
-                <button
-                  className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
-                  onClick={handleToggleModal}
-                >
-                  Sign up
-                </button>
-              </form>
-              <button
-                className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                onClick={signInWithGoogle}
-              >
-                Login with Google
-              </button>
+          <form className="pb-2">
+            <h2 className="text-lg font-medium mb-4">Login</h2>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Email
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="email"
+                value={Email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Password
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="password"
+                value={Password}
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            {Email !== "" && Password !== "" && (
+              <button
+                className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                onClick={Login}
+              >
+                Login
+              </button>
+            )}
+            <button
+              className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
+              onClick={handleToggleModal}
+            >
+              Sign up
+            </button>
+
+            <button
+              className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"
+              onClick={signInWithGoogle}
+            >
+              Login with Google
+            </button>
+            <button
+              className="bg-red-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full top-0 left-0 "
+              onClick={() => Context.setIdentifyModal(false)}
+            >
+              Close
+            </button>
+          </form>
         )}
-      </div>
-      <div>
+
         {!showModal && (
-          <div className="align-center h-64 w-64 flex items-center justify-center static">
-            <div className="bg-white p-6 rounded-lg">
-              <form className="pb-2">
-                <h2 className="text-lg font-medium mb-4">Sign Up</h2>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Username
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="text"
-                    value={Username}
-                    required
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Email
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="email"
-                    value={Email}
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Password
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="password"
-                    value={Password}
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="block text-gray-700 font-medium mb-2">
-                    Confirm Password
-                  </label>
-                  <input
-                    className="border border-gray-400 p-2 rounded-lg w-full"
-                    type="password"
-                    value={ConfirmPassword}
-                    required
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </div>
-                {Email !== "" &&
-                  Password !== "" &&
-                  Password == ConfirmPassword && (
-                    <button
-                      className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
-                      onClick={SignUp}
-                    >
-                      Sign Up
-                    </button>
-                  )}
-                <button
-                  className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
-                  onClick={handleToggleModal}
-                >
-                  Login
-                </button>
-              </form>
-              <button
-                className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
-                onClick={signInWithGoogle}
-              >
-                Sign in with Google
-              </button>
+          <form className="pb-2">
+            <h2 className="text-lg font-medium mb-4">Sign Up</h2>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Username
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="text"
+                value={Username}
+                required
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </div>
-          </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Email
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="email"
+                value={Email}
+                required
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Password
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="password"
+                value={Password}
+                required
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 font-medium mb-2">
+                Confirm Password
+              </label>
+              <input
+                className="border border-gray-400 p-2 rounded-lg w-full"
+                type="password"
+                value={ConfirmPassword}
+                required
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </div>
+            {Email !== "" && Password !== "" && Password == ConfirmPassword && (
+              <button
+                className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full"
+                onClick={SignUp}
+              >
+                Sign Up
+              </button>
+            )}
+            <button
+              className="bg-white hover:bg-gray-100 text-gray-800 font-medium py-2 px-4 rounded-full ml-2"
+              onClick={handleToggleModal}
+            >
+              Login
+            </button>
+
+            <button
+              className="bg-indigo-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full m-2"
+              onClick={signInWithGoogle}
+            >
+              Sign in with Google
+            </button>
+            <button
+              className="bg-red-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full top-0 left-0 "
+              onClick={() => leContext.setIdentifyModal(false)}
+            >
+              Close
+            </button>
+          </form>
         )}
       </div>
     </div>
   );
 };
 
-export default Identification;
+export { Identification };

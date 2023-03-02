@@ -1,10 +1,10 @@
-//import { Link } from "react-router-dom";
+import image from "./quizchamp-high-resolution-logo-color-on-transparent-background.png";
 
 function Home() {
   return (
-    <div>
+    <div className="flex justify-center items-center h-screen">
       <div className="section has-text-centered is-large">
-        <h1>Home</h1>
+        <img src={image} alt="Image" className="h-80 w-80" />
       </div>
     </div>
   );

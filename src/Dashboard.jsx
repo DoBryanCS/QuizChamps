@@ -45,24 +45,24 @@ function Dashboard() {
     getData().then(() => console.log("done getData"));
   }, []);
 
- const handleCreateQuiz = () => {
+  const handleCreateQuiz = () => {
     navigate("/quizCreation");
-    };
+  };
 
-    const handleUpdateQuiz = (id) => {
+  const handleUpdateQuiz = (id) => {
     navigate(`/quizModification/${id}`);
-    };
+  };
 
   return (
     <div className="relative min-h-screen">
       <div className="p-6">
-        <p className="text-2xl font-bold py-9 text-white">
+        <p className="text-4xl font-extrabold py-9 text-white">
           {" "}
           {leContext.Name} - Dashboard
         </p>
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-lg font-medium text-gray-700">My Quizes</h3>
+            <h3 className="text-lg font-medium text-gray-700 m-4">My Quizes</h3>
             <div className="grid grid-rows-1 gap-4">
               {quizes &&
                 quizes.map((q) => {
@@ -89,8 +89,10 @@ function Dashboard() {
             </div>
           </div>
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-lg font-medium text-gray-700">Create a quiz</h3>
-            <div className="grid grid-rows-1 align-middle gap-4">
+            <h3 className="text-lg font-medium text-gray-700 m-4">
+              Create a quiz
+            </h3>
+            <div className="grid grid-rows-1 align-middle justify-center gap-4 h-full">
               <div className="text-sm h-24 align-middle lg:flex-grow">
                 <button
                   className="inline-block h-12 w-32 text-sm px-4 py-2 leading-none border rounded text-black border-black hover:border-transparent hover:text-gray-800 hover:bg-gray-300 mt-4 lg:mt-0"

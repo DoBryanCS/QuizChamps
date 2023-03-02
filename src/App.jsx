@@ -3,7 +3,6 @@ import reactLogo from "./assets/react.svg";
 import "./App.css";
 import socket from "../socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Identification from "./Identification";
 import Dashboard from "./Dashboard";
 import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
@@ -23,26 +22,56 @@ function App() {
   }, []);
 
   const [Modal, setModal] = useState(false);
+  const [identifyModal, setIdentifyModal] = useState(false);
   const [UID, setUID] = useState("");
   const [Name, setName] = useState("");
-  const object = { Modal, setModal, UID, setUID, Name, setName };
+  const object = {
+    Modal,
+    setModal,
+    identifyModal,
+    setIdentifyModal,
+    UID,
+    setUID,
+    Name,
+    setName,
+  };
 
   return (
-    <div className="bg-indigo-900 min-h-screen">
+    <div className="min-h-screen">
       <UnContexte.Provider value={object}>
         {object.UID !== "" && (
           <BrowserRouter>
             <Menu />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Dashboard" element={<Dashboard />} />
+              <Route
+                path="/"
+                element={
+                  <div className="bg-indigo-900">
+                    <Home />
+                  </div>
+                }
+              />
+              <Route
+                path="/Dashboard"
+                element={
+                  <div className="bg-indigo-900">
+                    <Dashboard />
+                  </div>
+                }
+              />
               <Route path="/quizCreation" element={<QuizCreation />} />
               <Route
                 path="/quizModification/:id"
                 element={<QuizModification />}
               />
-              <Route path="/Identification" element={<Identification />} />
-              <Route path="*" element={<NoMatch />} />
+              <Route
+                path="*"
+                element={
+                  <div className="bg-indigo-900">
+                    <NoMatch />
+                  </div>
+                }
+              />
             </Routes>
           </BrowserRouter>
         )}
@@ -50,9 +79,22 @@ function App() {
           <BrowserRouter>
             <Menu />
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/Identification" element={<Identification />} />
-              <Route path="*" element={<NoMatch />} />
+              <Route
+                path="/"
+                element={
+                  <div className="bg-indigo-900">
+                    <Home />
+                  </div>
+                }
+              />
+              <Route
+                path="*"
+                element={
+                  <div className="bg-indigo-900">
+                    <NoMatch />
+                  </div>
+                }
+              />
             </Routes>
           </BrowserRouter>
         )}
