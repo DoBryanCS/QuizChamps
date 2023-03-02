@@ -296,6 +296,15 @@ function QuizModification() {
   function validateQuestions() {
     let missingQuestions = [];
 
+    // Check if there are no questions
+    if (questions.length === 0) {
+      missingQuestions.push({
+        number: 1,
+        info: ["Please add at least one question"],
+      });
+      return missingQuestions;
+    }
+
     // Check each question for missing information
     for (let i = 0; i < questions.length; i++) {
       let question = questions[i];
@@ -502,7 +511,6 @@ function QuizModification() {
               />
               <div className="answers">
                 <textarea
-                  
                   maxLength="200"
                   type="text"
                   placeholder="Add answer 1"
@@ -525,7 +533,6 @@ function QuizModification() {
                   }
                 />
                 <textarea
-                  
                   maxLength="200"
                   type="text"
                   placeholder="Add answer 2"
@@ -551,7 +558,6 @@ function QuizModification() {
               {questions[selectedQuestion.index].answers.length > 2 ? (
                 <div className="answers">
                   <textarea
-                    
                     maxLength="200"
                     type="text"
                     placeholder="Add answer 3"
@@ -574,7 +580,6 @@ function QuizModification() {
                     }
                   />
                   <textarea
-                    
                     maxLength="200"
                     type="text"
                     placeholder="Add answer 4"
