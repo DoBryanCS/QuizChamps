@@ -1,45 +1,56 @@
-import React from "react";
-import { FadeIn, SlideInDown } from "react-animated-components";
+import React, { useContext } from "react";
+import { FadeIn, SlideInDown, SlideInUp } from "react-animated-components";
 import { FadeOut } from "react-animated-components";
+import { AppStateContext } from "../contexts/AppState";
 
 const Leaderboard = ({ leaderboard }) => {
+  const { username } = useContext(AppStateContext);
+
   return (
-    // <div className="container">
-    //   Leaderboard
-    //   {leaderboard.map((user) => {
-    //     return (
-    //       <FadeIn>
-    //         <SlideInDown>
-    //           <h1>{user[1].username}</h1>
-    //           <h1>{user[1].score}</h1>
-    //           <br />
-    //         </SlideInDown>
-    //       </FadeIn>
-    //     );
-    //   })}
-    // </div>
     <section class="bg-gray-900 text-white w-full">
       <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
         <div class="mx-auto max-w-screen text-center">
-          <h1 class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
+          <h1 class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent mb-20 sm:text-5xl">
             Leaderboard
           </h1>
-
-          <p class="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
-            L'histoire est écrite par les vainqueurs. Qui sera le prochain ?
-          </p>
-
-          <div class="mt-8 flex flex-wrap justify-center gap-4">
-            {leaderboard.map((user) => {
-              return (
-                <FadeIn>
-                  <SlideInDown>
-                    <h1>{user[1].username}</h1>
-                    <h1 className="mb-5">{user[1].score}</h1>
-                  </SlideInDown>
-                </FadeIn>
-              );
-            })}
+          <div class="flex items-end w-full gap-2">
+            {/* Third Place */}
+            <FadeIn>
+              <SlideInUp>
+                <div className="flex flex-col">
+                  <h1>🥉</h1>
+                  <div class="py-4 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 w-64 rounded-md mt-7">
+                    <h1>{leaderboard[2][1].username}</h1>
+                    <h1>{leaderboard[2][1].score}</h1>
+                  </div>
+                </div>
+              </SlideInUp>
+            </FadeIn>
+            {/* First Place */}
+            <FadeIn>
+              <SlideInUp>
+                <div className="flex flex-col">
+                  <h1>🥇</h1>
+                  <div class="py-20 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 w-64 rounded-md mt-7">
+                    <h1>{leaderboard[0][1].username}</h1>
+                    <h1>{leaderboard[0][1].score}</h1>
+                  </div>
+                </div>
+              </SlideInUp>
+            </FadeIn>
+            {/* Second Place */}
+            <FadeIn>
+              <SlideInUp>
+                <div className="flex flex-col">
+                  <h1>🥈</h1>
+                  <div class="py-10 bg-gradient-to-r from-stone-500 via-stone-400 to-stone-500 w-64 rounded-md mt-7">
+                    {" "}
+                    <h1>{leaderboard[1][1].username}</h1>
+                    <h1>{leaderboard[1][1].score}</h1>
+                  </div>
+                </div>
+              </SlideInUp>
+            </FadeIn>
           </div>
         </div>
       </div>
