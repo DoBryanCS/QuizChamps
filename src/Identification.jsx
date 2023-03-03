@@ -7,11 +7,12 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import { auth } from "./firebase-config";
 import { useNavigate } from "react-router-dom";
 import { UnContexte } from "./App";
 
 const Identification = () => {
-  const auth = getAuth();
+  //const auth = getAuth();
   const [showModal, setShowModal] = useState(false);
 
   const handleToggleModal = () => {
@@ -24,7 +25,9 @@ const Identification = () => {
   const [ConfirmPassword, setConfirmPassword] = useState("");
   const [Error, setError] = useState("test erreur");
 
-  useEffect(() => { setError("")}, [Username, Email, Password, ConfirmPassword, showModal]);
+  useEffect(() => {
+    setError("");
+  }, [Username, Email, Password, ConfirmPassword, showModal]);
 
   //navigation + keeping info in session storage
   const navigate = useNavigate();
@@ -241,4 +244,4 @@ const Identification = () => {
   );
 };
 
-export default Identification;
+export { Identification };

@@ -4,7 +4,6 @@ import "./App.css";
 import socket from "./helpers/socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
-import Identification from "./Identification";
 import { Menu } from "./Components/Menu";
 import NoMatch from "./NoMatch";
 import Main from "./pages/MainApp";
@@ -49,7 +48,6 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/Identification" element={<Identification />} />
             <Route path="*" element={<NoMatch />} />
           </Routes>
         </AppStateContext.Provider>
