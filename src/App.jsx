@@ -42,24 +42,55 @@ function App() {
   const [username, setUsername] = useState("");
 
   return (
-    <div className="min-h-screen bg-indigo-900">
-    <BrowserRouter>
-      <UnContexte.Provider value={object}>
-        <Menu />
-        <AppStateContext.Provider
-          value={{ userJoined, setUserJoined, username, setUsername }}
-        >
-          <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/Dashboard" element={<Dashboard />} /> 
-            <Route path="/Home" element={<Home />} />
-            <Route path="/QuizCreation" element={<QuizCreation />} />
-            <Route path="/QuizModification" element={<QuizModification />} />
-            <Route path="*" element={<NoMatch />} />
-          </Routes>
-        </AppStateContext.Provider>
-      </UnContexte.Provider>
-    </BrowserRouter>
+    <div className="min-h-screen">
+      <BrowserRouter>
+        <UnContexte.Provider value={object}>
+          <Menu />
+          <AppStateContext.Provider
+            value={{ userJoined, setUserJoined, username, setUsername }}
+          >
+            <Routes>
+              {UID !== "" ? (
+                <>
+                  <Route
+                    path="/Dashboard"
+                    element={
+                      <div className="bg-indigo-900">
+                        <Dashboard />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="/QuizCreation"
+                    element={
+                      <div className="bg-indigo-900">
+                        <QuizCreation />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="/QuizModification/:id"
+                    element={
+                      <div className="bg-indigo-900">
+                        <QuizModification />
+                      </div>
+                    }
+                  />
+                </>
+              ) : null}
+              <Route
+                path="*"
+                element={
+                  <div className="bg-indigo-900">
+                    <NoMatch />
+                  </div>
+                }
+              />
+              <Route path="/" element={<Main />} />
+            </Routes>
+          </AppStateContext.Provider>
+        </UnContexte.Provider>
+      </BrowserRouter>
     </div>
   );
 }

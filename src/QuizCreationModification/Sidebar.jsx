@@ -61,7 +61,7 @@ function Sidebar({
                 : "#f0eded",
               position: "relative",
             }}
-            className="text-sm"
+            className="text-smm"
             key={index}
             // click handler to select the question
             onClick={() => selectQuestion(question.question, index)}

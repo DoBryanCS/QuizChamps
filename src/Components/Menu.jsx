@@ -35,18 +35,13 @@ const Menu = () => {
       <div>
         {Context.UID == "" && (
           <button
-            className="text-white font-medium hover:text-white mx-4 mr-4"
+            className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full mr-2"
             onClick={() => Context.setIdentifyModal(true)}
           >
             Login
           </button>
         )}
-        <button
-          className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full mr-2"
-          onClick={() => Context.setModal(true)}
-        >
-          Enter Quiz
-        </button>
+
         {Context.UID !== "" && (
           <>
             <button

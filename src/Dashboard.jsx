@@ -46,11 +46,11 @@ function Dashboard() {
   }, []);
 
   const handleCreateQuiz = () => {
-    navigate("/quizCreation");
+    navigate("/QuizCreation");
   };
 
   const handleUpdateQuiz = (id) => {
-    navigate(`/quizModification/${id}`);
+    navigate(`/QuizModification/${id}`);
   };
 
   return (
