@@ -42,7 +42,6 @@ function App() {
   const [username, setUsername] = useState("");
 
   return (
-    <div className="min-h-screen bg-indigo-900">
     <BrowserRouter>
       <UnContexte.Provider value={object}>
         <Menu />
@@ -51,7 +50,7 @@ function App() {
         >
           <Routes>
             <Route path="/" element={<Main />} />
-            <Route path="/Dashboard" element={<Dashboard />} /> 
+            <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/QuizCreation" element={<QuizCreation />} />
             <Route path="/QuizModification" element={<QuizModification />} />
@@ -60,7 +59,6 @@ function App() {
         </AppStateContext.Provider>
       </UnContexte.Provider>
     </BrowserRouter>
-    </div>
   );
 }
 
