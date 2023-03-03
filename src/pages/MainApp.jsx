@@ -99,7 +99,7 @@ function MainApp() {
   };
 
   return (
-    <div className="App">
+    <div className="App bg-indigo-900">
       {userJoined ? (
         gameStarted ? (
           <>
@@ -121,7 +121,7 @@ function MainApp() {
                     class="object-cover h-48 mx-auto"
                     src={question.imgURL}
                   />
-                  <h5 class=" text-2xl mb-20 mt-20 tracking-tight text-gray-900 dark:text-white">
+                  <h5 class=" text-2xl mb-20 mt-20 text-white tracking-tight dark:text-white">
                     {question && question.Question ? question.Question : null}
                   </h5>
                 </div>
