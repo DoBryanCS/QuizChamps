@@ -38,9 +38,15 @@ const Menu = () => {
             className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full mr-2"
             onClick={() => Context.setIdentifyModal(true)}
           >
-            Login
+            Login/Signup
           </button>
         )}
+        <button
+          className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full mr-2"
+          onClick={() => Context.setModal(true)}
+        >
+          Enter Quiz
+        </button>
 
         {Context.UID !== "" && (
           <>
