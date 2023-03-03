@@ -23,9 +23,6 @@ const JoinRoom = () => {
 
   return (
     <div className="container flex flex-col justify-items-center items-center content-center">
-      <button onClick={() => socket.emit("startGame", "77502622")}>
-        Start Game
-      </button>
       <h1 class="bg-gradient-to-r mb-6 from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent sm:text-5xl">
         Join Room
       </h1>
