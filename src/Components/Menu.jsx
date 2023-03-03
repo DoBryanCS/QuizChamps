@@ -3,7 +3,7 @@ import { QuizIdentification } from "./QuizIdentification";
 import { UnContexte } from "../App";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { Identification } from "../Identification";
+import Identification from "../Identification";
 
 const Menu = () => {
   const Context = useContext(UnContexte);

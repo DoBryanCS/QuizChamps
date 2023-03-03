@@ -241,4 +241,4 @@ const Identification = () => {
   );
 };
 
-export { Identification };
+export default Identification;

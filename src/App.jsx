@@ -1,7 +1,7 @@
-import { useState, useEffect } from "react";
+import React,{ useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
-import socket from "../socket";
+import socket from "./helpers/socket";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import Identification from "./Identification";
