@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
@@ -12,7 +10,7 @@ import { AppStateContext } from "./contexts/AppState";
 
 function App() {
   socket.on("connect", () => {
-    // console.log("connected");
+    console.log("connected");
   });
 
   useEffect(() => {
@@ -38,4 +36,3 @@ function App() {
 }
 
 export default App;
->>>>>>> Stashed changes

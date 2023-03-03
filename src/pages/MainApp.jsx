@@ -1,14 +1,3 @@
-<<<<<<< Updated upstream:src/pages/Main.jsx
-import { useState, useEffect } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-import AnswerCard from "./components/AnswerCard";
-import "react-circular-progressbar/dist/styles.css";
-import AnimatedTexte from "./components/AnimatedText";
-import Timer from "./components/Timer";
-import socket from "../socket";
-import Leaderboard from "./components/Leaderboard";
-=======
 import { useState, useEffect, useContext } from "react";
 import "../App.css";
 import AnswerCard from "../components/AnswerCard";
@@ -20,9 +9,8 @@ import Leaderboard from "../components/Leaderboard";
 import JoinRoom from "../components/JoinRoom";
 import { AppStateContext } from "../contexts/AppState";
 import WaitingRoom from "../components/WaitingRoom";
->>>>>>> Stashed changes:src/pages/MainApp.jsx
 
-function Main() {
+function MainApp() {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
   const [gameOver, setGameOver] = useState(false);
@@ -173,4 +161,4 @@ function Main() {
   );
 }
 
-export default Main;
+export default MainApp;
