@@ -42,6 +42,7 @@ function App() {
   const [username, setUsername] = useState("");
 
   return (
+    <div className="min-h-screen bg-indigo-900">
     <BrowserRouter>
       <UnContexte.Provider value={object}>
         <Menu />
@@ -59,6 +60,7 @@ function App() {
         </AppStateContext.Provider>
       </UnContexte.Provider>
     </BrowserRouter>
+    </div>
   );
 }
 
