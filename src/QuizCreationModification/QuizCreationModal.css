@@ -1,0 +1,47 @@
+.grid-container3 {
+  display: grid;
+  grid-template-rows: 15% 70% 15%;
+}
+
+.modalButton1 {
+  background-color: #f0edff;
+  border: 2px solid #f0edff;
+  border-radius: 30px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+.modalButton1:disabled {
+  opacity: 0.5; /* reduce opacity to indicate the button is disabled */
+  cursor: not-allowed; /* change the cursor to not-allowed */
+}
+
+.modalButton2 {
+  background-color: #6949ff;
+  border: 2px solid #6949ff;
+  border-radius: 30px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+.modalButton3 {
+  background-color: #F44336;
+  border: 2px solid #F44336;
+  border-radius: 30px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+.modalButton2:disabled {
+  opacity: 0.5; /* reduce opacity to indicate the button is disabled */
+  cursor: not-allowed; /* change the cursor to not-allowed */
+}
+
+.insertImage2 {
+  border: 2px solid #6949ff;
+  border-radius: 10px;
+  width: 40%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px #888888;
+}
