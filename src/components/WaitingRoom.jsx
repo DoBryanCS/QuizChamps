@@ -40,11 +40,11 @@ const WaitingRoom = () => {
                   <FadeIn>
                     <SlideInDown>
                       {username === user ? (
-                        <h1 className="bg-gradient-to-r from-indigo-600 via-indigo-500 to-indigo-600 text-white rounded-md">
+                        <h1 className="bg-gradient-to-r py-2 from-indigo-600 via-indigo-500 to-indigo-600 text-white rounded-md">
                           {user}
                         </h1>
                       ) : (
-                        <h1 className="bg-gradient-to-r from-indigo-400 via-indigo-300 to-indigo-400 text-white rounded-md ">
+                        <h1 className="bg-gradient-to-r py-1.5 from-indigo-400 via-indigo-300 to-indigo-400 text-white rounded-md ">
                           {user}
                         </h1>
                       )}
