@@ -1,4 +1,4 @@
-import React,{ useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import "./App.css";
 import socket from "./helpers/socket";
@@ -42,23 +42,17 @@ function App() {
 
   return (
     <BrowserRouter>
-      <AppStateContext.Provider
-        value={{ userJoined, setUserJoined, username, setUsername }}
-      >
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/Identification" element={<Identification />} />
-          <Route path="*" element={<NoMatch />} />
-        </Routes>
-      </AppStateContext.Provider>
-
       <UnContexte.Provider value={object}>
         <Menu />
-        <Routes>
-          <Route path="/" element={<NoMatch />} />
-          <Route path="/Identification" element={<Identification />} />
-          <Route path="*" element={<NoMatch />} />
-        </Routes>
+        <AppStateContext.Provider
+          value={{ userJoined, setUserJoined, username, setUsername }}
+        >
+          <Routes>
+            <Route path="/" element={<Main />} />
+            <Route path="/Identification" element={<Identification />} />
+            <Route path="*" element={<NoMatch />} />
+          </Routes>
+        </AppStateContext.Provider>
       </UnContexte.Provider>
     </BrowserRouter>
   );
