@@ -58,6 +58,7 @@ function QuizModification() {
     index: 0,
   });
 
+  // get quiz data
   async function getQuiz(id) {
     let rep = await fetch(`${serveur}/${id}`);
     if (rep.ok) {
@@ -68,6 +69,7 @@ function QuizModification() {
     }
   }
 
+  // prepopulated states and fields with quiz data
   useEffect(() => {
     async function getData() {
       const quizData = await getQuiz(id);
@@ -310,6 +312,15 @@ function QuizModification() {
       let question = questions[i];
       let missingInfo = [];
 
+      // Check if there are no questions
+      if (questions.length === 0) {
+        missingQuestions.push({
+          number: 1,
+          info: ["Please add at least one question"],
+        });
+        return missingQuestions;
+      }
+
       // Check question text
       if (!question.question) {
         missingInfo.push("Question missing");
@@ -321,6 +332,13 @@ function QuizModification() {
       ).length;
       if (answersMissing > 0) {
         missingInfo.push(`${answersMissing} answer(s) missing`);
+      }
+
+      // Check for duplicate answer text
+      let answerTexts = question.answers.map((answer) => answer.text);
+      let uniqueAnswerTexts = [...new Set(answerTexts)];
+      if (answerTexts.length !== uniqueAnswerTexts.length) {
+        missingInfo.push("Can't have same answers");
       }
 
       // Check each answer

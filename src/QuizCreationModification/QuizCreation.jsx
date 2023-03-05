@@ -294,6 +294,13 @@ function QuizCreation() {
         missingInfo.push(`${answersMissing} answer(s) missing`);
       }
 
+      // Check for duplicate answer text
+      let answerTexts = question.answers.map((answer) => answer.text);
+      let uniqueAnswerTexts = [...new Set(answerTexts)];
+      if (answerTexts.length !== uniqueAnswerTexts.length) {
+        missingInfo.push("Can't have same answers");
+      }
+
       // Check each answer
       for (let j = 0; j < question.answers.length; j++) {
         let answer = question.answers[j];
