@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import {
-  getAuth,
   updateProfile,
   signInWithPopup,
   GoogleAuthProvider,
@@ -12,9 +11,9 @@ import { useNavigate } from "react-router-dom";
 import { UnContexte } from "./App";
 
 const Identification = () => {
-  //const auth = getAuth();
   const [showModal, setShowModal] = useState(false);
 
+  // toggle modal
   const handleToggleModal = () => {
     setShowModal(!showModal);
   };
@@ -23,19 +22,18 @@ const Identification = () => {
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
   const [ConfirmPassword, setConfirmPassword] = useState("");
-  const [Error, setError] = useState("test erreur");
+  const [Error, setError] = useState("");
 
+  // reset error message when input change
   useEffect(() => {
     setError("");
   }, [Username, Email, Password, ConfirmPassword, showModal]);
 
-  //navigation + keeping info in session storage
+  // navigation + keeping info in session storage
   const navigate = useNavigate();
   const leContext = useContext(UnContexte);
 
-  //https://www.youtube.com/watch?v=PKwu15ldZ7k&ab_channel=WebDevSimplified
-  //https://github.com/WebDevSimplified/React-Firebase-Auth
-  //async function Login() {
+  // sign in with email and password with Firebase
   const Login = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(auth, Email, Password)
@@ -53,7 +51,7 @@ const Identification = () => {
       });
   };
 
-  //async function SignUp() {
+  // sign up with email and password with Firebase
   const SignUp = (e) => {
     e.preventDefault();
     createUserWithEmailAndPassword(auth, Email, Password)
@@ -65,7 +63,6 @@ const Identification = () => {
         const user = userCredential.user;
         leContext.setUID(user.uid);
         leContext.setName(Username);
-        sessionStorage.setItem("UID", user.uid);
         leContext.setIdentifyModal(false);
         navigate("/Dashboard");
       })
@@ -76,6 +73,7 @@ const Identification = () => {
       });
   };
 
+  // sign in with google account with Firebase
   const signInWithGoogle = (e) => {
     e.preventDefault();
     const provider = new GoogleAuthProvider();
@@ -84,7 +82,6 @@ const Identification = () => {
         const user = result.user;
         console.log(user);
         leContext.setUID(user.uid);
-        sessionStorage.setItem("UID", user.uid);
         leContext.setName(user.displayName);
         leContext.setIdentifyModal(false);
         navigate("/Dashboard");

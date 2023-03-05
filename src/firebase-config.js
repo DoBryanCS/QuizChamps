@@ -2,11 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
 import { getAuth } from "firebase/auth";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Configure Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyDZ_yT90A1M4pe66uGRoMGeUvxeIuKdGqo",
   authDomain: "quizchamp-c9a1c.firebaseapp.com",
@@ -20,5 +17,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+// export les fucntions nescessaire
 export const storage = getStorage(app);
 export const auth = getAuth(app);

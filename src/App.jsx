@@ -23,6 +23,7 @@ function App() {
     socket.emit("connection", "Hello from client");
   }, []);
 
+  // Ici on va créer un contexte pour gérer les modales
   const [Modal, setModal] = useState(false);
   const [identifyModal, setIdentifyModal] = useState(false);
   const [UID, setUID] = useState("");
@@ -38,6 +39,7 @@ function App() {
     setName,
   };
 
+  // Ici on va créer un contexte pour gérer les modales du quiz
   const [userJoined, setUserJoined] = useState(false);
   const [username, setUsername] = useState("");
 

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { QuizIdentification } from "./QuizIdentification";
+//import { QuizIdentification } from "./QuizIdentification";
 import { UnContexte } from "../App";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ const Menu = () => {
   const Context = useContext(UnContexte);
   const navigate = useNavigate();
 
-  // Function logout with google
+  // Function logout
   const handleSignOut = (e) => {
     e.preventDefault();
     const auth = getAuth();
@@ -41,12 +41,12 @@ const Menu = () => {
             Login/Signup
           </button>
         )}
-        <button
+        {/**<button
           className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full mr-2"
           onClick={() => Context.setModal(true)}
         >
           Enter Quiz
-        </button>
+        </button>*/}
 
         {Context.UID !== "" && (
           <>
@@ -65,11 +65,11 @@ const Menu = () => {
           </>
         )}
       </div>
-      {Context.Modal && (
+      {/*Context.Modal && (
         <div>
           <QuizIdentification />
         </div>
-      )}
+      )*/}
       {Context.identifyModal && (
         <div>
           <Identification />

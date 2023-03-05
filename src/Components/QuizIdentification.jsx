@@ -11,16 +11,18 @@ const QuizIdentification = () => {
   const navigate = useNavigate();
   const serveur = `http://localhost:3000/quizs/${QuizID}`;
 
+  // useEffect pour gerer les erreurs
   useEffect(() => {
     setError("");
   }, [QuizID, Name]);
 
-  const checkQuizExists = async () => {
+  // fonction pour verifier si le quiz existe -- Abandonné
+  /**const checkQuizExists = async () => {
     const quizId = QuizID;
     try {
       const response = await fetch(`${serveur}`);
       console.log(response);
-        const data = await response.json();
+      const data = await response.json();
       if (response.ok && data !== null) {
         console.log("quiz exists");
         return true;
@@ -32,9 +34,10 @@ const QuizIdentification = () => {
       console.error(error);
       return false;
     }
-  };
+  };*/
 
-  const joinQuiz = async (e) => {
+  // fonction pour rejoindre le quiz -- Abandonné
+  /**const joinQuiz = async (e) => {
     e.preventDefault();
     const quizExists = await checkQuizExists(QuizID);
     if (!quizExists) {
@@ -43,8 +46,8 @@ const QuizIdentification = () => {
       return;
     } else {
       setError("");
-    }
-    /**try {
+    }*/
+  /**try {
       const response = await fetch("http://localhost:3000/join-quiz", {
         method: "POST",
         headers: {
@@ -63,9 +66,8 @@ const QuizIdentification = () => {
     } catch (error) {
       console.error(error);
       setError("An error occurred");
-    }*/
-  };
-  
+    }
+  };*/
 
   return (
     <div className="fixed top-0 left-0 h-full w-full flex items-center justify-center backdrop-blur-sm z-10">
@@ -80,7 +82,7 @@ const QuizIdentification = () => {
               type="QuizID"
               value={QuizID}
               required
-              onChange={(e) => setQuizID(e.target.value)}
+              //onChange={(e) => setQuizID(e.target.value)} -- Abandonné
             />
           </div>
           <div className="mb-4">
@@ -95,16 +97,16 @@ const QuizIdentification = () => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          { Error && <p className="text-red-500">{Error}</p> }
+          {Error && <p className="text-red-500">{Error}</p>}
           <button
             className="bg-red-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full top-0 left-0 "
-            onClick={() => Context.setModal(false)}
+            //onClick={() => Context.setModal(false)} -- Abandonné
           >
             Close
           </button>
           <button
             className="bg-indigo-900 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full top-0 left-0  ml-2"
-            onClick={joinQuiz}
+            //onClick={joinQuiz} -- Abandonné
           >
             Verify
           </button>
