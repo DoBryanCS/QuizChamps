@@ -18,7 +18,6 @@ const Leaderboard = ({ leaderboard }) => {
             <FadeIn>
               <SlideInUp>
                 <div className="flex flex-col">
-                  <h1>🥉</h1>
                   <div class="py-4 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 w-64 rounded-md mt-7">
                     <h1>{leaderboard[2][1].username}</h1>
                     <h1>{leaderboard[2][1].score}</h1>

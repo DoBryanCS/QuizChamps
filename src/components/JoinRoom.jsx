@@ -3,7 +3,7 @@ import { AppStateContext } from "../contexts/AppState";
 import socket from "../helpers/socket";
 
 const JoinRoom = () => {
-  const [room, setRoom] = useState("123");
+  const [room, setRoom] = useState("77502622");
   const { userJoined, setUserJoined } = useContext(AppStateContext);
   const { username, setUsername } = useContext(AppStateContext);
 
