@@ -8,30 +8,16 @@ import { useNavigate } from "react-router-dom";
 function Dashboard() {
   const [quizes, setQuizes] = useState(null);
   const serveur = "http://localhost:3000/quizs/";
-  var quizlist = [];
   const leContext = useContext(UnContexte);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const auth = getAuth();
-    async function getQuiz(id) {
-      let rep = await fetch(`${serveur}/${id}`);
-      if (rep.ok) {
-        let data = await rep.json();
-        //const quizName = Object.keys(data)[0];
-        return data;
-      } else {
-        console.log("Erreur getQuiz");
-      }
-    }
-
+    //Fonction qui va chercher les quizs de l'utilisateur connecté
     async function getQuizs() {
-      //console.log(leContext.UID);
       let rep = await fetch(`${serveur}user/${leContext.UID}`);
+      //Si la réponse est ok setQuizes(data)
       if (rep.ok) {
         let data = await rep.json();
-        //const quizPromises = Object.keys(data).map((id) => getQuiz(id));
-        //const quizList = await Promise.all(quizPromises);
         setQuizes(data);
       } else {
         console.log("Erreur getQuizs");
@@ -45,10 +31,11 @@ function Dashboard() {
     getData().then(() => console.log("done getData"));
   }, []);
 
+  //Fonction qui envoie le user sur /quizCreation
   const handleCreateQuiz = () => {
     navigate("/quizCreation");
   };
-
+  //Fonction qui envoie le user sur /quizModification et qui passe le Id du quiz
   const handleUpdateQuiz = (id) => {
     navigate(`/quizModification/${id}`);
   };
@@ -64,6 +51,7 @@ function Dashboard() {
           <div className="bg-white rounded-lg shadow-md p-8">
             <h3 className="text-lg font-bold font-medium text-gray-700 m-4">My Quizes</h3>
             <div className="grid grid-rows-1 gap-4">
+              {/* map qui affiche chaque quiz créé par l'utilisateur */}
               {quizes &&
                 quizes.map((q) => {
                   return (
