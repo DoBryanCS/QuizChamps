@@ -7,20 +7,20 @@ const Leaderboard = ({ leaderboard }) => {
   const { username } = useContext(AppStateContext);
 
   return (
-    <section class="bg-gray-900 text-white w-full">
-      <div class="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
-        <div class="mx-auto max-w-screen text-center flex-col flex">
-          <h1 class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent mb-20 sm:text-5xl">
+    <section className="bg-gray-900 text-white w-full">
+      <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:h-screen lg:items-center">
+        <div className="mx-auto max-w-screen text-center flex-col flex">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-3xl font-extrabold text-transparent mb-20 sm:text-5xl">
             Leaderboard
           </h1>
-          <div class="flex items-end w-full gap-2">
+          <div className="flex items-end w-full gap-2">
             {/* Third Place */}
             <FadeIn>
               <SlideInUp>
                 <div className="flex flex-col">
                   <h1 className="text-3xl">🥉</h1>
                   {leaderboard[2][1] && (
-                    <div class="py-4 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 w-64 rounded-md mt-7">
+                    <div className="py-4 bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 w-64 rounded-md mt-7">
                       <h1>{leaderboard[2][1].username}</h1>
                       <h1>{leaderboard[2][1].score}</h1>
                     </div>
@@ -33,7 +33,7 @@ const Leaderboard = ({ leaderboard }) => {
               <SlideInUp>
                 <div className="flex flex-col">
                   <h1 className="text-3xl">🥇</h1>
-                  <div class="py-20 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 w-64 rounded-md mt-7">
+                  <div className="py-20 bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 w-64 rounded-md mt-7">
                     <h1>{leaderboard[0][1].username}</h1>
                     <h1>{leaderboard[0][1].score}</h1>
                   </div>
@@ -63,7 +63,7 @@ const Leaderboard = ({ leaderboard }) => {
                   <FadeIn>
                     <SlideInUp>
                       <div className="grid grid-cold-3 ">
-                        <div class="py-2 w-64 rounded-md mt-7 bg-indigo-900">
+                        <div className="py-2 w-64 rounded-md mt-7 bg-indigo-900">
                           <h1 className="font-bold">{index + 1}</h1>
                           <h1>{user[1].username}</h1>
                           <h1>{user[1].score}</h1>
