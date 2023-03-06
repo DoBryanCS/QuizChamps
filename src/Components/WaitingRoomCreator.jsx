@@ -22,13 +22,13 @@ const WaitingRoomCreator = () => {
       // setGameStarted(true);
     });
   }, [socket]);
-};
+
 
 const handleStartGame = (e) => {
   socket.emit("startGame", quizId);
   console.log(quizId);
   e.preventDefault();
-
+}
   return (
     <section class="bg-gray-900 text-white waiting-room w-full">
       {/*Start Game permet à l'hote d'un quiz de commencer le quiz */}
