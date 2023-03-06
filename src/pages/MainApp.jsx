@@ -122,7 +122,7 @@ function MainApp() {
                     src={question.imgURL}
                   />
                   {/* Question */}
-                  <h5 class=" text-2xl mb-20 mt-20 text-white tracking-tight dark:text-white">
+                  <h5 class=" text-2xl mb-20 mt-20 text-slate-900 tracking-tight dark:text-white">
                     {question && question.Question ? question.Question : null}
                   </h5>
                 </div>
