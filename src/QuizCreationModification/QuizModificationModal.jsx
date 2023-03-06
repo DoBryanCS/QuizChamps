@@ -155,7 +155,7 @@ function QuizModificationModal({ show, setShow, quizInfo, setQuizInfo }) {
   };
 
   return (
-    show && (
+    show && quizInfoTemp !== null && (
       <>
         {/* A div with a semi-transparent black background covering the whole screen */}
         <div

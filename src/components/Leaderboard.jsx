@@ -56,6 +56,7 @@ const Leaderboard = ({ leaderboard }) => {
               </SlideInUp>
             </FadeIn>
           </div>
+          {/* Leaderboard for the rest of the players */}
           <div className="grid grid-cols-3 ">
             {leaderboard.map((user, index) => {
               if (index > 2) {
