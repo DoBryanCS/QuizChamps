@@ -4,8 +4,10 @@ import { FaPlay, FaEdit } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import { UnContexte } from "./App";
 import { useNavigate } from "react-router-dom";
-import { AppStateContext } from "./contexts/AppState";
+import { AppStateContext } from "./contexts/AppState"
 import socket from "./helpers/socket";
+
+
 
 function Dashboard() {
   const [quizes, setQuizes] = useState(null);
@@ -30,7 +32,7 @@ function Dashboard() {
     }
 
     async function getData() {
-      getQuizs().then((data) => console.log("done getQuizs"));
+      getQuizs().then(() => console.log("done getQuizs"));
     }
 
     getData().then(() => console.log("done getData"));
@@ -44,19 +46,16 @@ function Dashboard() {
     navigate(`/QuizModification/${id}`);
   };
 
+
   useEffect(() => {
     socket.emit("connection", "Hello from client");
   }, []);
   //Fonction qui permet à l'hote de démarrer une salle d'attente pour un quiz
-  const handleJoinRoom = (room) => {
+  const handleJoinRoom = (e) => {
     console.log(username);
-    let hostObject = {
-      username: "host",
-      room: room,
-    };
-    console.log(hostObject);
-    if (room != "") {
-      socket.emit("joinRoom", hostObject);
+    console.log(room);
+    if (username != "" && room != "") {
+      socket.emit("joinRoom", { username, room });
       setUserJoined(true);
       navigate(`/WaitingRoom/${room}`);
     } else {
@@ -64,11 +63,10 @@ function Dashboard() {
     }
   };
 
-  const handlePlay = (q, e) => {
-    e.preventDefault();
-    setRoom(q.id);
-    handleJoinRoom(q.id);
-    console.log(q);
+  const handlePlay = (creator, id) => {
+    setRoom(id);
+    setUsername(creator);
+    handleJoinRoom(id);
   };
 
   return (
@@ -80,9 +78,7 @@ function Dashboard() {
         </p>
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-lg font-bold font-medium text-gray-700 m-4">
-              My Quizes
-            </h3>
+            <h3 className="text-lg font-bold font-medium text-gray-700 m-4">My Quizes</h3>
             <div className="grid grid-rows-1 gap-4">
               {quizes &&
                 quizes.map((q) => {
@@ -94,9 +90,8 @@ function Dashboard() {
                       <p className="col-span-4 align-middle rounded">
                         {q["quizTitle"]}
                       </p>
-                      <button
-                        className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
-                        onClick={(e) => handlePlay(q, e)}
+                      <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
+                        onClick={() => handlePlay(q["creator"], q["id"])}
                       >
                         <FaPlay />
                       </button>
