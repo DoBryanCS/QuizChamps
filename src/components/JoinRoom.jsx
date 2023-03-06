@@ -32,7 +32,7 @@ const JoinRoom = () => {
         </SlideInDown>
       </FadeIn>
       <form className="w-96  justify-items-center items-center">
-        <div class="mb-6">
+        <div className="mb-6">
           <input
             type="text"
             id="username"
@@ -44,7 +44,7 @@ const JoinRoom = () => {
             required
           />
         </div>
-        <div class="mb-6">
+        <div className="mb-6">
           <input
             type="text"
             id="room"

@@ -4,6 +4,10 @@ import { FaPlay, FaEdit } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import { UnContexte } from "./App";
 import { useNavigate } from "react-router-dom";
+import { AppStateContext } from "./contexts/AppState"
+import socket from "./helpers/socket";
+
+
 
 function Dashboard() {
   const [quizes, setQuizes] = useState(null);
@@ -12,7 +16,12 @@ function Dashboard() {
   const leContext = useContext(UnContexte);
   const navigate = useNavigate();
 
+  const [room, setRoom] = useState("");
+  const { userJoined, setUserJoined } = useContext(AppStateContext);
+  const { username, setUsername } = useContext(AppStateContext);
+
   useEffect(() => {
+
     const auth = getAuth();
     async function getQuiz(id) {
       let rep = await fetch(`${serveur}/${id}`);
@@ -53,6 +62,29 @@ function Dashboard() {
     navigate(`/QuizModification/${id}`);
   };
 
+
+  useEffect(() => {
+    socket.emit("connection", "Hello from client");
+  }, []);
+
+  const handleJoinRoom = (e) => {
+    console.log(username)
+    console.log(room);
+    if (username != "" && room != "") {
+      socket.emit("joinRoom", { username, room });
+      setUserJoined(true);
+      navigate(`/WaitingRoom/${room}`);
+    } else {
+      alert("Please enter a username and a room");
+    }
+  };
+
+  const handlePlay = (creator, id) => {
+    setRoom(id);
+    setUsername(creator);
+    handleJoinRoom(id);
+  };
+
   return (
     <div className="relative min-h-screen">
       <div className="p-6">
@@ -74,12 +106,14 @@ function Dashboard() {
                       <p className="col-span-4 align-middle rounded">
                         {q["quizTitle"]}
                       </p>
-                      <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6">
+                      <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
+                        onClick={() => handlePlay(q["creator"], q["id"])}
+                      >
                         <FaPlay />
                       </button>
                       <button
                         className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
-                        onClick={() => handleUpdateQuiz(q["id"])}
+                        onClick={() => handleUpdateQuiz(["id"])}
                       >
                         <FaEdit />
                       </button>

@@ -3,8 +3,11 @@ import { FadeIn, SlideInDown } from "react-animated-components";
 import { FadeOut } from "react-animated-components";
 import socket from "../helpers/socket";
 import { AppStateContext } from "../contexts/AppState";
+import { useParams } from "react-router";
 
-const WaitingRoom = () => {
+
+const WaitingRoomCreator = () => {
+    const { quizId } = useParams();
   const [users, setUsers] = useState([]);
   const { username } = useContext(AppStateContext);
 
@@ -18,12 +21,13 @@ const WaitingRoom = () => {
     });
   }, [socket]);
 
-  /* <button onClick={() => socket.emit("startGame", "77502622")}>
-        Start Game
-      </button> */
   return (
     <section class="bg-gray-900 text-white waiting-room w-full">
-
+      
+        <button onClick={() => socket.emit("startGame", quizId)}>
+        Start Game
+      </button>
+      
 
       <div class="mx-auto max-w-full-xl px-4 py-32 lg:flex lg:h-full lg:items-center">
         <div class="mx-auto max-w-screen text-center">
@@ -63,4 +67,4 @@ const WaitingRoom = () => {
   );
 };
 
-export default WaitingRoom;
+export default WaitingRoomCreator;

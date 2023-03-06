@@ -11,6 +11,7 @@ import Home from "./Home.jsx";
 import QuizCreation from "./QuizCreationModification/QuizCreation";
 import QuizModification from "./QuizCreationModification/QuizModification";
 import { AppStateContext } from "./contexts/AppState";
+import WaitingRoomCreator from "./Components/WaitingRoomCreator";
 
 export const UnContexte = React.createContext();
 
@@ -75,6 +76,14 @@ function App() {
                     element={
                       <div className="bg-indigo-900">
                         <QuizModification />
+                      </div>
+                    }
+                  />
+                  <Route
+                    path="/WaitingRoom/:id"
+                    element={
+                      <div className="bg-indigo-900">
+                        <WaitingRoomCreator />
                       </div>
                     }
                   />
