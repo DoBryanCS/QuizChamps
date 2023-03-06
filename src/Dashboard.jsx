@@ -12,7 +12,6 @@ import socket from "./helpers/socket";
 function Dashboard() {
   const [quizes, setQuizes] = useState(null);
   const serveur = "http://localhost:3000/quizs/";
-  var quizlist = [];
   const leContext = useContext(UnContexte);
   const navigate = useNavigate();
 
@@ -21,26 +20,11 @@ function Dashboard() {
   const { username, setUsername } = useContext(AppStateContext);
 
   useEffect(() => {
-
-    const auth = getAuth();
-    async function getQuiz(id) {
-      let rep = await fetch(`${serveur}/${id}`);
-      if (rep.ok) {
-        let data = await rep.json();
-        //const quizName = Object.keys(data)[0];
-        return data;
-      } else {
-        console.log("Erreur getQuiz");
-      }
-    }
-
+    //Fonction qui va chercher tous les quizs de l'utilisateur connectés
     async function getQuizs() {
-      //console.log(leContext.UID);
       let rep = await fetch(`${serveur}user/${leContext.UID}`);
       if (rep.ok) {
         let data = await rep.json();
-        //const quizPromises = Object.keys(data).map((id) => getQuiz(id));
-        //const quizList = await Promise.all(quizPromises);
         setQuizes(data);
       } else {
         console.log("Erreur getQuizs");
@@ -53,11 +37,11 @@ function Dashboard() {
 
     getData().then(() => console.log("done getData"));
   }, []);
-
+  //Un handle qui envoie l'utilisateur vers l'interface de création de quiz
   const handleCreateQuiz = () => {
     navigate("/QuizCreation");
   };
-
+  //Un handle qui envoie l'utilisateur vers l'interface de modification de quiz en passant l'id du quiz dans la route
   const handleUpdateQuiz = (id) => {
     navigate(`/QuizModification/${id}`);
   };
@@ -66,9 +50,9 @@ function Dashboard() {
   useEffect(() => {
     socket.emit("connection", "Hello from client");
   }, []);
-
+  //Fonction qui permet à l'hote de démarrer une salle d'attente pour un quiz
   const handleJoinRoom = (e) => {
-    console.log(username)
+    console.log(username);
     console.log(room);
     if (username != "" && room != "") {
       socket.emit("joinRoom", { username, room });
