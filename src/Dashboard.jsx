@@ -4,8 +4,10 @@ import { FaPlay, FaEdit } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import { UnContexte } from "./App";
 import { useNavigate } from "react-router-dom";
-import { AppStateContext } from "./contexts/AppState";
+import { AppStateContext } from "./contexts/AppState"
 import socket from "./helpers/socket";
+
+
 
 function Dashboard() {
   const [quizes, setQuizes] = useState(null);
@@ -30,7 +32,7 @@ function Dashboard() {
     }
 
     async function getData() {
-      getQuizs().then((data) => console.log("done getQuizs"));
+      getQuizs().then(() => console.log("done getQuizs"));
     }
 
     getData().then(() => console.log("done getData"));
@@ -43,6 +45,7 @@ function Dashboard() {
   const handleUpdateQuiz = (id) => {
     navigate(`/QuizModification/${id}`);
   };
+
 
   useEffect(() => {
     socket.emit("connection", "Hello from client");
@@ -77,9 +80,7 @@ function Dashboard() {
         </p>
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-lg font-bold font-medium text-gray-700 m-4">
-              My Quizes
-            </h3>
+            <h3 className="text-lg font-bold font-medium text-gray-700 m-4">My Quizes</h3>
             <div className="grid grid-rows-1 gap-4">
               {quizes &&
                 quizes.map((q) => {
@@ -91,9 +92,8 @@ function Dashboard() {
                       <p className="col-span-4 align-middle rounded">
                         {q["quizTitle"]}
                       </p>
-                      <button
-                        className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
-                        onClick={(e) => handlePlay(q, e)}
+                      <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
+                        onClick={() => handlePlay(q["creator"], q["id"])}
                       >
                         <FaPlay />
                       </button>
