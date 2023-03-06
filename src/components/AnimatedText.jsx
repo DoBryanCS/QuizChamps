@@ -7,7 +7,7 @@ const AnimatedTexte = ({text}) => {
       type="words"
       interval={0.02}
       duration={0.2}
-      className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
+      className="text-2xl font-bold tracking-tight text-slate-900"
       animation={{
         y: "100px",
         ease: "ease",
