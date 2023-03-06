@@ -115,17 +115,21 @@ function MainApp() {
             leaderboard.length > 0 ? (
               <Leaderboard leaderboard={leaderboard} />
             ) : (
+              // Question Image
               <div className=" mt-20 flex justify-center items-center flex-col w-full">
                 <div className="container w-full h-full">
                   <img
                     class="object-cover h-48 mx-auto"
                     src={question.imgURL}
                   />
+                  {/* Question */}
                   <h5 class=" text-2xl mb-20 mt-20 text-white tracking-tight dark:text-white">
                     {question && question.Question ? question.Question : null}
                   </h5>
                 </div>
 
+
+                {/* List of answers */}
                 <div className="grid grid-cols-2 gap-6 w-3/5">
                   {answers &&
                     showTimer &&

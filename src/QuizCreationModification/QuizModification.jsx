@@ -390,6 +390,7 @@ function QuizModification() {
         quizInfo.title,
         quizInfo.topic
       );
+      console.log(formattedData);
       fetch(`${serveur}/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -398,6 +399,7 @@ function QuizModification() {
         .then((response) => response.json())
         .then((data) => {
           console.log(data);
+          console.log(formattedData);
           handlesaveQuestions();
         })
         .catch((error) => console.error(error));

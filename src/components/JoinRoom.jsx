@@ -22,6 +22,7 @@ const JoinRoom = () => {
     }
   };
 
+  // Join room form
   return (
     <div className="container flex flex-col justify-items-center items-center content-center">
       <FadeIn>
