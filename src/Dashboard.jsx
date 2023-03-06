@@ -49,12 +49,10 @@ function Dashboard() {
   }, []);
   //Fonction qui permet à l'hote de démarrer une salle d'attente pour un quiz
   const handleJoinRoom = (room) => {
-    console.log(username);
     let hostObject = {
       username: "host",
       room: room,
     };
-    console.log(hostObject);
     if (room != "") {
       socket.emit("joinRoom", hostObject);
       setUserJoined(true);
@@ -68,7 +66,6 @@ function Dashboard() {
     e.preventDefault();
     setRoom(q.id);
     handleJoinRoom(q.id);
-    console.log(q);
   };
 
   return (

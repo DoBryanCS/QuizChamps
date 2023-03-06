@@ -22,20 +22,20 @@ const WaitingRoom = () => {
 
 
   return (
-    <section class="bg-gray-900 text-white waiting-room w-full">
+    <section className="bg-gray-900 text-white waiting-room w-full">
 
 
-      <div class="mx-auto max-w-full-xl px-4 py-32 lg:flex lg:h-full lg:items-center">
-        <div class="mx-auto max-w-screen text-center">
-          <h1 class="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-5xl font-extrabold text-transparent sm:text-5xl">
+      <div className="mx-auto max-w-full-xl px-4 py-32 lg:flex lg:h-full lg:items-center">
+        <div className="mx-auto max-w-screen text-center">
+          <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-5xl font-extrabold text-transparent sm:text-5xl">
             Salle d'attente
           </h1>
 
-          <p class="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
+          <p className="mx-auto mt-4 max-w-xl sm:text-xl sm:leading-relaxed">
             Un peu de patience.. L'hote va démarrer la partie.
           </p>
 
-          <div class="mt-8 flex flex-col flex-wrap justify-center gap-1">
+          <div className="mt-8 flex flex-col flex-wrap justify-center gap-1">
             {/*users.map affiche chaque utilisateur qui se connecte pour jouer au quiz */}
             {users.map((userArray) => {
               return userArray.map((user) => {

@@ -55,7 +55,6 @@ function MainApp() {
           for (let i = 0; i < keys.length; i++) {
             shuffled[keys[i]] = questionObj.Answers[keys[i]];
           }
-          console.log(shuffled);
           setAnswers(shuffled);
           setPlayerHasAnswered(false);
         }
@@ -118,10 +117,10 @@ function MainApp() {
               <div className=" mt-20 flex justify-center items-center flex-col w-full">
                 <div className="container w-full h-full">
                   <img
-                    class="object-cover h-48 mx-auto"
+                    className="object-cover h-48 mx-auto"
                     src={question.imgURL}
                   />
-                  <h5 class=" text-2xl mb-20 mt-20 text-white tracking-tight dark:text-white">
+                  <h5 className=" text-2xl mb-20 mt-20 text-white tracking-tight dark:text-white">
                     {question && question.Question ? question.Question : null}
                   </h5>
                 </div>
