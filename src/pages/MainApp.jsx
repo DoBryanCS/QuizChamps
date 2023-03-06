@@ -99,7 +99,7 @@ function MainApp() {
   };
 
   return (
-    <div className="App bg-indigo-900">
+    <div className="App">
       {userJoined ? (
         gameStarted ? (
           <>
