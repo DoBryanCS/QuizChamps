@@ -4,7 +4,6 @@ import { FadeOut } from "react-animated-components";
 import socket from "../helpers/socket";
 import { AppStateContext } from "../contexts/AppState";
 import { useParams } from "react-router";
-//allo
 
 //WaitingRoomCreator est un component accessible seulement au créateur d'un quiz qui lance une partie
 const WaitingRoomCreator = () => {
