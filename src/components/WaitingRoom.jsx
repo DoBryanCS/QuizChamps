@@ -4,11 +4,13 @@ import { FadeOut } from "react-animated-components";
 import socket from "../helpers/socket";
 import { AppStateContext } from "../contexts/AppState";
 
+//WaitingRoom est un component accessible seulement à un joueur (qui n'est pas l'hôte) d'un quiz
 const WaitingRoom = () => {
   const [users, setUsers] = useState([]);
   const { username } = useContext(AppStateContext);
 
   useEffect(() => {
+    //Envoie au backend la liste des joueurs connectés
     socket.on("userJoined", (data) => {
       setUsers([data]);
     });
@@ -18,9 +20,7 @@ const WaitingRoom = () => {
     });
   }, [socket]);
 
-  /* <button onClick={() => socket.emit("startGame", "77502622")}>
-        Start Game
-      </button> */
+
   return (
     <section class="bg-gray-900 text-white waiting-room w-full">
 
@@ -36,6 +36,7 @@ const WaitingRoom = () => {
           </p>
 
           <div class="mt-8 flex flex-col flex-wrap justify-center gap-1">
+            {/*users.map affiche chaque utilisateur qui se connecte pour jouer au quiz */}
             {users.map((userArray) => {
               return userArray.map((user) => {
                 console.log(user);
