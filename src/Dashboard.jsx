@@ -66,8 +66,8 @@ function Dashboard() {
   };
 
   const handlePlay = (q, e) => {
-    e.preventDefault();
     setRoom(q.id);
+   // e.preventDefault();
     handleJoinRoom(q.id);
   };
 
@@ -93,7 +93,7 @@ function Dashboard() {
                         {q["quizTitle"]}
                       </p>
                       <button className="align-middle rounded h-12 w-16 bg-slate-200 hover:bg-slate-300 flex items-center px-6"
-                        onClick={() => handlePlay(q["creator"], q["id"])}
+                        onClick={() => handlePlay(q)}
                       >
                         <FaPlay />
                       </button>
