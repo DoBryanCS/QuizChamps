@@ -1,8 +1,7 @@
 import React from "react";
 
+// Component pour afficher une carte de réponse
 const AnswerCard = ({ answer, color, myFunc }) => {
-  // const cardColors = ["bg-teal", "bg-indigo", "bg-green", "bg-red"];
-  // let color = cardColors[(Math.random() * cardColors.length) | 0];
 
   const cardClassName = `block p-6 ${color}  rounded-lg w-full pt-10 pb-10 text-xl shadow hover:${color}-800 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700`;
   return (

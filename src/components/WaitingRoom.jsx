@@ -20,11 +20,8 @@ const WaitingRoom = () => {
     });
   }, [socket]);
 
-
   return (
     <section className="bg-gray-900 text-white waiting-room w-full">
-
-
       <div className="mx-auto max-w-full-xl px-4 py-32 lg:flex lg:h-full lg:items-center">
         <div className="mx-auto max-w-screen text-center">
           <h1 className="bg-gradient-to-r from-green-300 via-blue-500 to-purple-600 bg-clip-text text-5xl font-extrabold text-transparent sm:text-5xl">
@@ -41,7 +38,7 @@ const WaitingRoom = () => {
               return userArray.map((user) => {
                 console.log(user);
                 return (
-                  <FadeIn>
+                  <FadeIn key={user}>
                     <SlideInDown>
                       {username === user ? (
                         <h1 className="bg-gradient-to-r py-2 from-indigo-600 via-indigo-500 to-indigo-600 text-white rounded-md">

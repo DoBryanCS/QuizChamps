@@ -61,7 +61,7 @@ const Leaderboard = ({ leaderboard }) => {
             {leaderboard.map((user, index) => {
               if (index > 2) {
                 return (
-                  <FadeIn>
+                  <FadeIn key={user}>
                     <SlideInUp>
                       <div className="grid grid-cold-3 ">
                         <div className="py-2 w-64 rounded-md mt-7 bg-indigo-900">

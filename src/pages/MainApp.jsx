@@ -10,6 +10,7 @@ import JoinRoom from "../components/JoinRoom";
 import { AppStateContext } from "../contexts/AppState";
 import WaitingRoom from "../components/WaitingRoom";
 
+// Page where the game is played
 function MainApp() {
   const [question, setQuestion] = useState({});
   const [answers, setAnswers] = useState([]);
@@ -45,6 +46,7 @@ function MainApp() {
       setQuestion(questionObj);
       setShowLeaderboard(false);
       setShowTimer(true);
+      // Shuffle AnswerCards order to prevent cheating
       if (questionObj && questionObj.Answers) {
         function shuffleObject(questionObj) {
           let shuffled = {};
@@ -61,18 +63,21 @@ function MainApp() {
         shuffleObject(questionObj);
       }
     });
+    // Receiving game over from server
     socket.on("gameOver", (score) => {
       setGameOver(true);
       console.log("Game Over");
       // console.log(score);
     });
 
+    // Receiving time up from server
     socket.on("timesUp", (score) => {
       setShowTimer(false);
       setShowTimeUp(true);
       console.log("Times up");
     });
 
+    // Receiving leaderboard from server
     socket.on("sendLeaderboardToClient", (leaderboardObj) => {
       setLeaderboard(Object.entries(leaderboardObj));
       console.log(leaderboardObj);
@@ -84,6 +89,7 @@ function MainApp() {
       });
     });
 
+    //In Real Time updated timer
     socket.on("sendTimerToClient", (time) => {
       setTimer(time);
     });
@@ -102,10 +108,12 @@ function MainApp() {
       {userJoined ? (
         gameStarted ? (
           <>
+            {/* Timer */}
             {showTimer && timer > 0 ? (
               <div className="container w-40 h-40">
                 <Timer timer={timer} />
               </div>
+              // Time up text
             ) : showTimeUp ? (
               <AnimatedTexte text={"Temps écoulé !"} />
             ) : null}
@@ -127,7 +135,6 @@ function MainApp() {
                   </h5>
                 </div>
 
-
                 {/* List of answers */}
                 <div className="grid grid-cols-2 gap-6 w-3/5">
                   {answers &&
@@ -146,6 +153,7 @@ function MainApp() {
                           answer={answer}
                           color={cardColors[idx]}
                           isCorrect={isCorrect}
+                          key={answer}
                           myFunc={() => handleAnswer(isCorrect)}
                         />
                       );
