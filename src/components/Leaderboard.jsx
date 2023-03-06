@@ -46,7 +46,7 @@ const Leaderboard = ({ leaderboard }) => {
                 <div className="flex flex-col">
                   <h1 className="text-3xl">🥈</h1>
                   {leaderboard[1][1] !== undefined && (
-                    <div class="py-10 bg-gradient-to-r from-stone-500 via-stone-400 to-stone-500 w-64 rounded-md mt-7">
+                    <div className="py-10 bg-gradient-to-r from-stone-500 via-stone-400 to-stone-500 w-64 rounded-md mt-7">
                       {" "}
                       <h1>{leaderboard[1][1].username}</h1>
                       <h1>{leaderboard[1][1].score}</h1>
