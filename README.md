@@ -1,3 +1,4 @@
+<a name="readme-top"></a>
 <div align="center">
     <img src="https://github.com/DoBryanCS/QuizChamps/assets/111463691/5654050d-44c2-4688-9565-56161ae4f660" alt="Logo" width="80" height="80">
     <h3 align="center">QuizChamps</h3>
@@ -17,7 +18,7 @@
       <a href="#Pages-de-lapplication">Pages de l'application</a>
     </li>
     <li>
-      <a href="#Guide-dinstallation-et-dutilisation">Guide d'installation et d'utilisation</a>
+      <a href="#Guides-dinstallation-et-dutilisation">Guides d'installation et d'utilisation</a>
     </li>
     <li>
       <a href="#Contributeurs">Contributeurs</a>
