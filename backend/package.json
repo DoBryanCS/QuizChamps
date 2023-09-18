@@ -1,0 +1,23 @@
+{
+  "name": "quizchamp",
+  "version": "1.0.0",
+  "description": "QuizChamp app created by Maisonneuve students",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "engines": {
+    "node": "16.15.0",
+    "npm": "8.4.1"
+  },
+  "author": "e1971009",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase": "^9.16.0",
+    "firebase-admin": "^11.5.0",
+    "nodemon": "^2.0.20",
+    "socket.io": "^4.5.4"
+  }
+}
