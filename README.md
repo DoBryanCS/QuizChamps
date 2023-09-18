@@ -17,6 +17,9 @@
       <a href="#Pages-de-lapplication">Pages de l'application</a>
     </li>
     <li>
+      <a href="#Guide-dinstallation-et-dutilisation">Guide d'installation et d'utilisation</a>
+    </li>
+    <li>
       <a href="#Contributeurs">Contributeurs</a>
     </li>
   </ol>
@@ -66,6 +69,15 @@ Voici les technologies et les outils utilisés pour le développement de ce proj
     <summary>Pages de classement des joueurs</summary>
     <img src="https://github.com/DoBryanCS/QuizChamps/assets/111463691/01e286c4-a2e8-4f6e-a839-3bbe213ca2d5" name="image-name">
   </details>
+
+  <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
+
+  ## Guides d'installation et d'utilisation
+
+  Les guides sont aussi disponible dans le répertoire documentation en format word
+  <br/>
+  [Guide_d’utilisation.pdf](https://github.com/DoBryanCS/QuizChamps/files/12653794/Guide_d.utilisation.pdf)
+  [Guide_dinstallation.pdf](https://github.com/DoBryanCS/QuizChamps/files/12653795/Guide_dinstallation.pdf)
 
   <p align="right">(<a href="#readme-top">Retour en haut</a>)</p>
 
